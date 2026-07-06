@@ -739,4 +739,5 @@
     <string name="preferences_switch_scan_rate_limit_label">Включить ограничение скорости сканирования</string>
     <string name="preferences_scan_rate_limit_duration_label">Продолжительность ограничения скорости</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">Верхний регистр</string>
 </resources>
