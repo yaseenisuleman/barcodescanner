@@ -1,0 +1,7 @@
+1.26.3
+
+Pełny rejestr zmian tutaj: https://gitlab.com/Atharok/BarcodeScanner/-/releases
+
+- Naprawiono problem, który powodował, że kody kreskowe 1D nie były już wykrywane poziomo.
+- Zaktualizowano tłumaczenia (Weblate).
+- Zaktualizowano zależności.
