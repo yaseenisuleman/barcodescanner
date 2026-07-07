@@ -743,4 +743,5 @@
     <string name="go_back">返回</string>
     <string name="preferences_switch_scan_rate_limit_label">启用扫描速率限制</string>
     <string name="preferences_scan_rate_limit_duration_label">速率限制时长</string>
+    <string name="uppercase">大写字母</string>
 </resources>
