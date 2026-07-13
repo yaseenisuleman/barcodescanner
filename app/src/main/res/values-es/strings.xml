@@ -741,4 +741,5 @@
     <string name="preferences_switch_scan_rate_limit_label">Habilitar límite de tasa de escaneo</string>
     <string name="preferences_scan_rate_limit_duration_label">Duración del límite de tasa</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">Mayúsculas</string>
 </resources>
