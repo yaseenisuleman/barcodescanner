@@ -1,0 +1,7 @@
+1.26.3
+
+Changelog completo aqui: https://gitlab.com/Atharok/BarcodeScanner/-/releases
+
+- Corrigido erro em que códigos de barra unidimensionais não eram mais detectados horizontalmente.
+- Traduções atualizadas (Weblate).
+- Dependências atualizadas.
