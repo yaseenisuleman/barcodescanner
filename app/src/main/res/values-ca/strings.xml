@@ -664,4 +664,18 @@
     <string name="preferences_switch_history_save_duplicates_summary_on">El duplicats s\'afegiran a l\'historial</string>
     <string name="apply">Aplicar</string>
     <string name="snack_bar_message_items_deleted">Elements suprimits de l\'historial.</string>
+    <string name="barcode_not_found">Codi de barres no trobat</string>
+    <string name="margins">Marges</string>
+    <string name="value_px">%1$spx</string>
+    <string name="increase">Augmentar</string>
+    <string name="decrease">Disminuir</string>
+    <string name="uppercase">Majúscules</string>
+    <string name="preferences_switch_scan_barcode_type_filter_label">Seleccioneu els tipus codi de barres per escanejar</string>
+    <string name="non_whitelisted_barcode_title">%s no és a la llista amb permisos</string>
+    <string name="non_whitelisted_barcode_message">Aquest tipus de codi de barres no està habilitat per a l\'escaneig. Pot habilitar-lo a la configuració, o permetre-ho aquest cop.</string>
+    <string name="allow_this_time">Autoritzar aquest cop</string>
+    <string name="go_back">Torna enrere</string>
+    <string name="preferences_switch_scan_rate_limit_label">Habilita el límit de velocitat d\'escaneig</string>
+    <string name="preferences_scan_rate_limit_duration_label">Durada de la limitació</string>
+    <string name="preferences_scan_rate_limit_duration_summary">%s</string>
 </resources>
