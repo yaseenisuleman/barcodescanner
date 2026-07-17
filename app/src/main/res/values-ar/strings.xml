@@ -56,7 +56,7 @@
     <string name="label_history_empty">لم يتم مسح أي عناصر…</string>
     <string name="import_json_label">استيراد (.JSON)</string>
     <string name="snack_bar_message_item_deleted">تم حذف المنتج ”%1$s“ من السجلّ.</string>
-    <string name="barcode_found_on_label">عثر عليه في %1$s!</string>
+    <string name="barcode_found_on_label">تم العثور عليه على %1$s!</string>
     <string name="menu_item_history_add_in_history">إضافة إلى السجلّ</string>
     <string name="qr_code_error_correction_level_name_quartile">رُبعي (~٪٢٥)</string>
     <string name="bar_code_type_name_unknown">غير معروف</string>
@@ -71,7 +71,7 @@
     <string name="qr_code_type_name_agenda">جدول أعمال</string>
     <string name="qr_code_error_correction_level_name_medium">متوسط (~٪١٥)</string>
     <string name="cancel_label">إلغاء</string>
-    <string name="barcode_not_found_on_api_label">لم يعثر على معلومات في %1$s.</string>
+    <string name="barcode_not_found_on_api_label">لم يتم العثور على أي معلومات عن %1$s.</string>
     <string name="export_csv_label">تصدير كملف .CSV</string>
     <string name="record_label">حفظ</string>
     <string name="qr_code_type_name_mail">بريد</string>
@@ -91,7 +91,7 @@
     <string name="flash_label">الفلاش</string>
     <string name="bar_code_type_unknown_book_title">عنوان الكتاب غير معروف</string>
     <string name="delete_label">حذف</string>
-    <string name="scan_error_short_information_label">حصل خطأ خلال البحث على المعلومات!</string>
+    <string name="scan_error_short_information_label">حدث خطأ أثناء البحث عن المعلومات!</string>
     <string name="bar_code_type_unknown_product">منتج</string>
     <string name="popup_message_confirmation_delete_history">هل تريد حذف كل السجلّ؟</string>
     <string name="menu_item_history_removed_from_history">تم الحذف من السجلّ!</string>
@@ -596,7 +596,7 @@
     <string name="country_kh">كمبوديا</string>
     <string name="action_add_to_calendar">إضافة إلى التقويم</string>
     <string name="country_nl">هولندا</string>
-    <string name="no_internet_permission">ليس لديك إذن للوصول إلى الإنترنت.</string>
+    <string name="no_internet_permission">ليس لديك إذن بالوصول إلى الإنترنت.</string>
     <string name="country_li">ليختنشتاين</string>
     <string name="barcode_creator_confirm_text_label">يولد</string>
     <string name="off_salt_label">ملح</string>
