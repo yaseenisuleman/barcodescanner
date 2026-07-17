@@ -1,0 +1,5 @@
+1.9.1
+
+- Redisseny dels estils per a la integració completa de Material3, i una millor implementació de Material You.
+- S'ha canviat el color de les icones de les dreceres. 
+- S'ha afegit el nou logo de OpenFoodFacts.
