@@ -1,0 +1,5 @@
+1.11.0
+
+- Afegida la traducció al xinès (per Hu Shenghao).
+- Afegit el zoom de càmera per gestos (amb 2 dits i toc doble) (per Hu Shenghao).
+- Unes quantes petites millores.

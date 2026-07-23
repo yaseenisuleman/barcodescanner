@@ -1,0 +1,2 @@
+- Afegir la possibilitat de canviar l'idioma a Android 13.
+- Afegir accés al codi font als paràmetres.
