@@ -1,0 +1,4 @@
+1.14.1
+
+- Corregit un erro que bloquejava la cerca en API remotes.
+- Actualitzada la traducció al polonès.
