@@ -1,0 +1,7 @@
+1.14.0
+
+- Afegida la traducció del polonès (gràcies a phyrz91).
+- Resolta una fallada d'Android 7.
+- Afegit un paràmetre per establir el valor del zoom per defecte de la càmera.
+- Afegit l'anàlisi del codi QR UPI.
+- Afegit l'historial per a la creació de codis QR EPC.

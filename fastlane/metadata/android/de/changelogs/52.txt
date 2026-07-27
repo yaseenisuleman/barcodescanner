@@ -1,0 +1,7 @@
+1.26.3
+
+Vollständiges Änderungsprotokoll: https://gitlab.com/Atharok/BarcodeScanner/-/releases
+
+- Problem behoben, bei dem 1D-Barcodes in horizontaler Ausrichtung nicht mehr erkannt wurden.
+- Übersetzungen aktualisiert (Weblate).
+- Abhängigkeiten aktualisiert.

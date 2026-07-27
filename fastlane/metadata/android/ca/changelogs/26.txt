@@ -1,0 +1,9 @@
+1.12.0
+
+- Afegida la traducció del xinès tradicional (per plum7x).
+- Actualització de Kotlin (1.8.0). Actualització de dependències.
+- Afegida l'eliminació d'imatges generades per la vista de retallar quan s'escaneja des d'una imatge.
+- Afegida la selecció i eliminació de diversos elements des de l'historial.
+- Afegida l'eliminació d'un element des de la vista de resultats.
+- Millora de colors i estils.
+- Millores del codi.

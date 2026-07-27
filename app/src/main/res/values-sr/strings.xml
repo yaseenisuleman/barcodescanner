@@ -680,4 +680,5 @@
     <string name="preferences_switch_scan_rate_limit_label">Укључи ограничење учесталости скенирања</string>
     <string name="preferences_scan_rate_limit_duration_label">Трајање ограничења учесталости</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">Велика слова</string>
 </resources>

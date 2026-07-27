@@ -494,7 +494,7 @@
     <string name="ingredient_veggie_entitled_label">Ingredienti secondo lo stato vegetariano e vegano.</string>
     <string name="qr_code_text_radio_button_label_m">Sig.</string>
     <string name="qr_code_text_radio_button_label_mrs">Sig.Ra</string>
-    <string name="qr_code_text_radio_button_label_miss">Sig.Na</string>
+    <string name="qr_code_text_radio_button_label_miss">Sig.na</string>
     <string name="preferences_information_about_remote_api_what_is_an_api_description">Una API è una libreria software utilizzata per accedere ad un servizio. Questa applicazione, utilizzata le API per accedere ad un servizio web. Tale servizio recupera informazioni da un database.
 \nAd esempio, Open Food Facts è un database di prodotti alimentari che offre accesso tramite API al suo database. Utilizzo questa API per mostrare le informazioni sui prodotti alimentari.</string>
     <string name="preferences_information_about_remote_api_automatic_search_description">Se l\'opzione \"%1$s\" è abilitata, quando scansioni il codice a barre di un prodotto, una ricerca viene effettuata automaticamente tramite l\'API selezionata nelle impostazioni. Se non si riceve nessuna informazione, puoi sempre effettuare una ricerca manuale su un\'altra API dopo la scansione.</string>
@@ -676,4 +676,5 @@
     <string name="allow_this_time">Consenti questa volta</string>
     <string name="preferences_switch_scan_rate_limit_label">Attiva la limitazione della velocità di scansione</string>
     <string name="preferences_scan_rate_limit_duration_label">Durata della limitazione</string>
+    <string name="uppercase">Maiuscolo</string>
 </resources>

@@ -676,4 +676,5 @@
     <string name="preferences_switch_scan_rate_limit_label">스캔 속도 제한 활성화</string>
     <string name="preferences_scan_rate_limit_duration_label">속도 제한 간격</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">대문자</string>
 </resources>

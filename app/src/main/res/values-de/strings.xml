@@ -743,4 +743,5 @@
     <string name="preferences_switch_scan_rate_limit_label">Scan-Ratenbegrenzung aktivieren</string>
     <string name="preferences_scan_rate_limit_duration_label">Dauer der Ratenbegrenzung</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">Großbuchstaben</string>
 </resources>

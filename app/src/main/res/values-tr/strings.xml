@@ -740,4 +740,5 @@
     <string name="preferences_switch_scan_rate_limit_label">Tarama hızı sınırlamasını etkinleştir</string>
     <string name="preferences_scan_rate_limit_duration_label">Hız sınırı süresi</string>
     <string name="preferences_scan_rate_limit_duration_summary">%s</string>
+    <string name="uppercase">Büyük harf</string>
 </resources>
