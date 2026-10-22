@@ -19,9 +19,9 @@
             android:layout_width="@dimen/icon_large_size"
             android:layout_height="@dimen/icon_large_size"
             android:layout_centerVertical="true"
-            android:background="@drawable/circle"
-            app:backgroundTint="?colorPrimary"
-            app:tint="?colorOnPrimary"
+            android:background="@drawable/icon_badge"
+            app:backgroundTint="?colorPrimaryContainer"
+            app:tint="?colorOnPrimaryContainer"
             android:contentDescription="@string/image_view_description_icon" />
 
         <TextView

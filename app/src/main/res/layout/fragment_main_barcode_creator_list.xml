@@ -40,9 +40,9 @@
                         android:id="@+id/fragment_main_create_barcode_list_bar_code_icon_image_view"
                         android:layout_width="@dimen/icon_large_size"
                         android:layout_height="@dimen/icon_large_size"
-                        android:background="@drawable/circle"
-                        app:tint="?colorOnPrimary"
-                        app:backgroundTint="?colorPrimary"
+                        android:background="@drawable/icon_badge"
+                        app:tint="?colorOnPrimaryContainer"
+                        app:backgroundTint="?colorPrimaryContainer"
                         android:src="@drawable/baseline_qr_code_24"
                         android:contentDescription="@string/image_view_description_icon"
 

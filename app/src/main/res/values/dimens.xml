@@ -14,6 +14,7 @@
     <dimen name="image_product_size">96dp</dimen>
     <dimen name="image_label_max_height">48dp</dimen>
     <dimen name="image_risk_indicator_size">16dp</dimen>
+    <dimen name="image_corner_radius">12dp</dimen>
 
     <!-- Margin -->
     <dimen name="thin_margin">2dp</dimen>
@@ -25,19 +26,23 @@
     <dimen name="shortcut_padding">24dp</dimen>
 
     <!-- Text -->
-    <dimen name="large_text_size">20sp</dimen>
-    <dimen name="medium_text_size">15sp</dimen>
-    <dimen name="normal_text_size">13sp</dimen>
+    <dimen name="large_text_size">22sp</dimen>
+    <dimen name="medium_text_size">16sp</dimen>
+    <dimen name="normal_text_size">14sp</dimen>
+    <dimen name="label_text_size">12sp</dimen>
 
     <!-- CardView -->
-    <dimen name="card_standard_corner_radius">8dp</dimen>
+    <dimen name="card_standard_corner_radius">16dp</dimen>
     <dimen name="card_elevation">1dp</dimen>
 
-    <dimen name="card_generator_item_height">48dp</dimen>
-    <dimen name="card_generator_item_corner_radius">24dp</dimen>
+    <dimen name="card_generator_item_height">56dp</dimen>
+    <dimen name="card_generator_item_corner_radius">28dp</dimen>
 
     <!-- Dialog -->
-    <dimen name="dialog_corner_radius">16dp</dimen>
+    <dimen name="dialog_corner_radius">28dp</dimen>
+
+    <!-- Text input -->
+    <dimen name="text_input_corner_radius">12dp</dimen>
 
     <!-- Stroke -->
     <dimen name="stroke_width">1dp</dimen>

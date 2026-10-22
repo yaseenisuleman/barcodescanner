@@ -754,7 +754,8 @@
     <!-- Animations -->
     <string name="animation_activity_transition" translatable="false">AnimationActivityTransition</string>
     <!-- Default font (Put here to avoid a crash on Android 7) -->
-    <string name="default_font" translatable="false">sans-serif-medium</string>
+    <string name="default_font" translatable="false">sans-serif</string>
+    <string name="title_font" translatable="false">sans-serif-medium</string>
     <!-- External Services Label -->
     <string name="google_label" translatable="false">Google</string>
     <string name="bing_label" translatable="false">Bing</string>

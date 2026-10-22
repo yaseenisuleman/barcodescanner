@@ -11,9 +11,9 @@
         android:layout_width="@dimen/icon_large_size"
         android:layout_height="@dimen/icon_large_size"
         android:contentDescription="@string/image_view_description_icon"
-        android:background="@drawable/circle"
-        app:backgroundTint="?colorPrimary"
-        app:tint="?colorOnPrimary"
+        android:background="@drawable/icon_badge"
+        app:backgroundTint="?colorPrimaryContainer"
+        app:tint="?colorOnPrimaryContainer"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

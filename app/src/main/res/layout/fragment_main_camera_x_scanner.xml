@@ -59,6 +59,7 @@
             android:layout_height="wrap_content"
             android:text="@string/scan_information_label"
             android:visibility="gone"
+            android:background="@drawable/pill"
             android:textColor="@android:color/white"
             style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
     </FrameLayout>

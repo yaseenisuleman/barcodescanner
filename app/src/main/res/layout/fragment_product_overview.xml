@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="@dimen/image_corner_radius"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="false"
             android:layout_alignParentTop="true"

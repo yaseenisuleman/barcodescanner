@@ -23,8 +23,8 @@
                 android:layout_height="0dp"
                 android:clipToPadding="false"
                 android:fitsSystemWindows="false"
-                app:itemTextAppearanceActive="@style/AppTheme.TextView.Appearance.Normal.Primary"
-                app:itemTextAppearanceInactive="@style/AppTheme.TextView.Appearance.Normal.Primary"
+                app:itemTextAppearanceActive="@style/AppTheme.BottomNavigationView.Label.Active"
+                app:itemTextAppearanceInactive="@style/AppTheme.BottomNavigationView.Label.Inactive"
                 app:menu="@menu/menu_bottom_navigation_view"
 
                 app:layout_constraintTop_toTopOf="parent"
