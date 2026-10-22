@@ -79,7 +79,6 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
         configureStartActivity(R.string.preferences_about_permissions_key, AboutPermissionsDescriptionActivity::class)
         configureStartActivity(R.string.preferences_about_library_third_key, AboutThirdPartyLibrariesActivity::class)
         configureStartActivity(R.string.preferences_about_bdd_key, AboutBddActivity::class)
-        configureSourceCodePreference()
         configureBarcodeTypeFilterPreference()
     }
 
@@ -224,19 +223,6 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
         if (pref != null) {
             pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 startActivity(activityKClass)
-            }
-        }
-    }
-
-    private fun configureSourceCodePreference() {
-        val pref = findPreference(getString(R.string.preferences_source_code_key)) as Preference?
-
-        if (pref != null) {
-            pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val url = requireActivity().getString(R.string.source_code_link)
-                val intent: Intent = createSearchUrlIntent(url)
-                requireActivity().startActivity(intent)
-                true
             }
         }
     }

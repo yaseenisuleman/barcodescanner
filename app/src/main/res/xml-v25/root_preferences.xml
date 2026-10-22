@@ -201,10 +201,6 @@
             app:key="@string/preferences_about_bdd_key"
             app:title="@string/preferences_about_bdd_label" />
 
-        <com.atharok.barcodescanner.presentation.customView.preferences.CustomPreference
-            app:key="@string/preferences_source_code_key"
-            app:title="@string/preferences_source_code_label" />
-
     </com.atharok.barcodescanner.presentation.customView.preferences.CustomPreferenceCategory>
 
 </PreferenceScreen>
