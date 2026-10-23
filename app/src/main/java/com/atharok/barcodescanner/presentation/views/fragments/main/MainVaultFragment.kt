@@ -83,8 +83,9 @@ class MainVaultFragment : Fragment() {
         viewBinding.fragmentMainVaultFilterButton.setOnClickListener { showNotAvailable() }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onResume() {
+        super.onResume()
+        // Onglets conservés en mémoire : le verrouillage de rotation est appliqué à chaque affichage
         val activity: Activity = requireActivity()
         if(activity is BaseActivity){
             activity.lockDeviceRotation(false)

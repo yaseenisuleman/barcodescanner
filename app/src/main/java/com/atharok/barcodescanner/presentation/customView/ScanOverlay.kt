@@ -28,8 +28,6 @@ import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Path
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Shader
@@ -53,10 +51,8 @@ class ScanOverlay @JvmOverloads constructor(
 
     private val backgroundPaint: Paint
 
-    private val viewfinderPaint: Paint = Paint().apply {
-        style = Paint.Style.FILL
-        xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
-    }
+    // Masque = plein écran moins le viseur (EVEN_ODD) : pas besoin de calque logiciel ni de CLEAR
+    private val maskPath: Path = Path().apply { fillType = Path.FillType.EVEN_ODD }
 
     private val viewfinderCornerPaint: Paint
 
@@ -74,7 +70,6 @@ class ScanOverlay @JvmOverloads constructor(
     fun getViewfinderRect(): Rect = viewfinderRect.toRect()
 
     init{
-        setLayerType(LAYER_TYPE_SOFTWARE, null)
         context.theme.obtainStyledAttributes(attrs, R.styleable.ScanOverlay, defStyleAttr, defStyleRes).apply {
             try {
                 viewfinderRadius = getDimension(R.styleable.ScanOverlay_viewfinder_radius, getDP(40f))
@@ -120,11 +115,8 @@ class ScanOverlay @JvmOverloads constructor(
     protected override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // Background
-        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), backgroundPaint)
-
-        // Viewfinder
-        canvas.drawRoundRect(viewfinderRect, viewfinderRadius, viewfinderRadius, viewfinderPaint)
+        // Background (with the viewfinder cut out)
+        canvas.drawPath(maskPath, backgroundPaint)
 
         if (viewfinderCornerLength > 0f) {
             drawBracketCorners(canvas)
@@ -206,6 +198,10 @@ class ScanOverlay @JvmOverloads constructor(
         val bottom = centerY + viewfinderSize / 2f
 
         viewfinderRect.set(left, top, right, bottom)
+
+        maskPath.reset()
+        maskPath.addRect(0f, 0f, overlayWidth, overlayHeight, Path.Direction.CW)
+        maskPath.addRoundRect(viewfinderRect, viewfinderRadius, viewfinderRadius, Path.Direction.CW)
 
         scanLineGlowPaint?.let {
             val inset = viewfinderSize * 0.08f

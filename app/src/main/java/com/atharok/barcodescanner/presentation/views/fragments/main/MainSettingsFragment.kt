@@ -58,14 +58,6 @@ import kotlin.reflect.KClass
 
 class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = requireActivity()
-        if (activity is BaseActivity) {
-            activity.lockDeviceRotation(false)
-        }
-    }
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, null)
 
@@ -84,6 +76,11 @@ class MainSettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSha
 
     override fun onResume() {
         super.onResume()
+        // Onglets conservés en mémoire : le verrouillage de rotation est appliqué à chaque affichage
+        val activity: Activity = requireActivity()
+        if (activity is BaseActivity) {
+            activity.lockDeviceRotation(false)
+        }
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 

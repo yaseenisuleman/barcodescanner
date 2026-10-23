@@ -109,6 +109,7 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     private val barcodeAnalyzer by lazy { CameraBarcodeAnalyzer(this) }
     private var isBarcodeAnalyzerRunning = false
     private var camera: Camera? = null
+    private var cameraProvider: ProcessCameraProvider? = null
     private var flashEnabled = false
     private var isProcessingBarcode = false
     private var lastProcessingTime = 0L
@@ -158,6 +159,14 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     override fun onResume() {
         super.onResume()
 
+        // Onglets conservés en mémoire : le verrouillage de rotation est appliqué à chaque affichage
+        val activity: Activity = requireActivity()
+        if(activity is BaseActivity) {
+            if(settingsManager.isAutoScreenRotationScanDisabled) {
+                activity.lockDeviceRotation(true)
+            }
+        }
+
         // Clear rate limit cache if rate limiting is disabled
         if (!settingsManager.isRateLimitEnabled) {
             recentScans.clear()
@@ -175,16 +184,6 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         super.onPause()
         switchOffFlash()
         stopBarcodeAnalyzer()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val activity: Activity = requireActivity()
-        if(activity is BaseActivity) {
-            if(settingsManager.isAutoScreenRotationScanDisabled) {
-                activity.lockDeviceRotation(true)
-            }
-        }
     }
 
     // ---- Menu ----
@@ -232,6 +231,22 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    /**
+     * Les onglets de MainActivity sont masqués au lieu d'être détruits : on libère la caméra
+     * quand l'onglet Scan est masqué et on la relance quand il réapparaît.
+     */
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden) {
+            switchOffFlash()
+            stopBarcodeAnalyzer()
+            cameraProvider?.unbindAll()
+            camera = null
+        } else if (allPermissionsGranted()) {
+            startCamera()
+        }
     }
 
     // ---- Buttons ----
@@ -305,11 +320,13 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         cameraProviderFuture.addListener({
 
             // Prevent a rare crash if the view is destroyed before the ProcessCameraProvider callback is executed
-            if (_binding == null) {
+            // ... ou si l'onglet Scan a été masqué entre-temps
+            if (_binding == null || isHidden) {
                 return@addListener
             }
 
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            this.cameraProvider = cameraProvider
 
             // Preview
             val preview = Preview.Builder()

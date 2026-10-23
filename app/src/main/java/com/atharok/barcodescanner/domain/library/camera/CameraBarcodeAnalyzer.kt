@@ -22,7 +22,6 @@ package com.atharok.barcodescanner.domain.library.camera
 
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import com.atharok.barcodescanner.common.extensions.toByteArray
 import com.atharok.barcodescanner.presentation.customView.ScanOverlay
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.BinaryBitmap
@@ -32,6 +31,7 @@ import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.Result
 import com.google.zxing.common.HybridBinarizer
+import java.nio.ByteBuffer
 import kotlin.math.roundToInt
 
 class CameraBarcodeAnalyzer(
@@ -50,10 +50,23 @@ class CameraBarcodeAnalyzer(
         setHints(map)
     }
 
+    // Tampon réutilisé d'une image à l'autre (évite une allocation par image et les pauses du GC)
+    private var frameBuffer = ByteArray(0)
+
+    private fun copyToFrameBuffer(buffer: ByteBuffer): ByteArray {
+        buffer.rewind()
+        val size = buffer.remaining()
+        if (frameBuffer.size != size) {
+            frameBuffer = ByteArray(size)
+        }
+        buffer.get(frameBuffer)
+        return frameBuffer
+    }
+
     override fun analyze(image: ImageProxy) {
         try {
             val plane = image.planes[0]
-            val imageData = plane.buffer.toByteArray()
+            val imageData = copyToFrameBuffer(plane.buffer)
 
             val size = image.width.coerceAtMost(image.height) * ScanOverlay.RATIO
 

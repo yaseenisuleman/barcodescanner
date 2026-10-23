@@ -23,6 +23,7 @@ package com.atharok.barcodescanner.presentation.views.activities
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
@@ -31,6 +32,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commitNow
+import androidx.lifecycle.Lifecycle
 import com.atharok.barcodescanner.BuildConfig
 import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.databinding.ActivityMainBinding
@@ -54,6 +56,15 @@ class MainActivity: BaseActivity() {
     companion object {
         private const val ITEM_ID_KEY = "itemIdKey"
         private const val TITLE_RES_KEY = "titleResId"
+        private const val TAB_TAG_PREFIX = "main_tab_"
+
+        // Onglets préparés en arrière-plan (le scanner est exclu : il demanderait la permission caméra)
+        private val PREWARMED_TABS = listOf(
+            R.id.menu_navigation_bottom_view_vault,
+            R.id.menu_navigation_bottom_view_history,
+            R.id.menu_navigation_bottom_view_create,
+            R.id.menu_navigation_bottom_view_settings
+        )
     }
 
     private var currentItemId: Int = R.id.menu_navigation_bottom_view_scan
@@ -91,6 +102,7 @@ class MainActivity: BaseActivity() {
             it.setTitle(titleRes)
         }
         configureHeader(viewBinding.activityMainActivityLayout.toolbar)
+        updateHeader(currentItemId)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             configureNavigationRailView()
@@ -99,6 +111,7 @@ class MainActivity: BaseActivity() {
         }
 
         setContentView(rootView)
+        prewarmTabs()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -221,49 +234,88 @@ class MainActivity: BaseActivity() {
         currentItemId = id
         updateHeader(id)
         return when (id) {
-            R.id.menu_navigation_bottom_view_scan -> changeFragment(
-                mainCameraXScannerFragment,
-                R.string.title_scan
-            )
-
-            R.id.menu_navigation_bottom_view_vault -> changeFragment(
-                mainVaultFragment,
-                R.string.header_vault_title
-            )
-
-            R.id.menu_navigation_bottom_view_history -> changeFragment(
-                mainHistoryFragment,
-                R.string.title_history
-            )
-
-            R.id.menu_navigation_bottom_view_create -> changeFragment(
-                mainBarcodeCreatorListFragment,
-                R.string.title_bar_code_creator
-            )
-
-            R.id.menu_navigation_bottom_view_settings -> changeFragment(
-                mainSettingsFragment,
-                R.string.title_settings
-            )
-
+            R.id.menu_navigation_bottom_view_scan -> changeFragment(id, R.string.title_scan)
+            R.id.menu_navigation_bottom_view_vault -> changeFragment(id, R.string.header_vault_title)
+            R.id.menu_navigation_bottom_view_history -> changeFragment(id, R.string.title_history)
+            R.id.menu_navigation_bottom_view_create -> changeFragment(id, R.string.title_bar_code_creator)
+            R.id.menu_navigation_bottom_view_settings -> changeFragment(id, R.string.title_settings)
             else -> false
         }
     }
 
-    private fun changeFragment(fragment: Fragment, titleResource: Int): Boolean {
+    private fun getTabTag(itemId: Int): String = "$TAB_TAG_PREFIX$itemId"
+
+    /**
+     * Après une recréation de l'Activity, le FragmentManager a déjà restauré les onglets.
+     */
+    private fun getTabFragment(itemId: Int): Fragment? =
+        supportFragmentManager.findFragmentByTag(getTabTag(itemId)) ?: when (itemId) {
+            R.id.menu_navigation_bottom_view_scan -> mainCameraXScannerFragment
+            R.id.menu_navigation_bottom_view_vault -> mainVaultFragment
+            R.id.menu_navigation_bottom_view_history -> mainHistoryFragment
+            R.id.menu_navigation_bottom_view_create -> mainBarcodeCreatorListFragment
+            R.id.menu_navigation_bottom_view_settings -> mainSettingsFragment
+            else -> null
+        }
+
+    /**
+     * Crée les autres onglets (masqués) quand l'application est inactive, un par passage,
+     * pour que leur première ouverture soit instantanée.
+     */
+    private fun prewarmTabs() {
+        val pendingTabs = PREWARMED_TABS.toMutableList()
+        Looper.myQueue().addIdleHandler {
+            if (isFinishing || isDestroyed || supportFragmentManager.isStateSaved) {
+                return@addIdleHandler false
+            }
+            val itemId = pendingTabs.removeFirstOrNull() ?: return@addIdleHandler false
+            if (supportFragmentManager.findFragmentByTag(getTabTag(itemId)) == null) {
+                getTabFragment(itemId)?.let { fragment ->
+                    supportFragmentManager.commitNow {
+                        setReorderingAllowed(true)
+                        add(viewBinding.activityMainFrameLayout.id, fragment, getTabTag(itemId))
+                        hide(fragment)
+                        setMaxLifecycle(fragment, Lifecycle.State.STARTED)
+                    }
+                }
+            }
+            pendingTabs.isNotEmpty()
+        }
+    }
+
+    /**
+     * Les onglets sont créés une seule fois puis affichés / masqués, pour éviter de reconstruire
+     * leurs vues à chaque changement d'onglet. Un onglet masqué est limité à l'état STARTED
+     * (onPause, la vue est conservée) ; le scanner libère la caméra dans onHiddenChanged().
+     */
+    private fun changeFragment(itemId: Int, titleResource: Int): Boolean {
         titleRes = titleResource
         supportActionBar?.setTitle(titleResource)
 
-        // Évite de recréer le fragment déjà affiché (ex: au démarrage ou en appuyant sur l'onglet actif),
-        // ce qui redémarrait inutilement la caméra.
-        if (fragment.isAdded && supportFragmentManager.findFragmentById(viewBinding.activityMainFrameLayout.id) === fragment) {
+        val tag = getTabTag(itemId)
+        val fragment = getTabFragment(itemId) ?: return false
+        val visibleTabs = supportFragmentManager.fragments.filter {
+            it.tag?.startsWith(TAB_TAG_PREFIX) == true && !it.isHidden
+        }
+
+        // Onglet déjà affiché (ex: au démarrage ou en appuyant sur l'onglet actif)
+        if (fragment.isAdded && visibleTabs == listOf(fragment)) {
             return true
         }
+
         supportFragmentManager.commitNow {
-            setReorderingAllowed(false)
+            setReorderingAllowed(true)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            replace(viewBinding.activityMainFrameLayout.id, fragment)
-            //addToBackStack(null) // Permet de revenir aux fragments affichés précédement via le bouton back
+            visibleTabs.filter { it !== fragment }.forEach {
+                hide(it)
+                setMaxLifecycle(it, Lifecycle.State.STARTED)
+            }
+            if (fragment.isAdded) {
+                show(fragment)
+            } else {
+                add(viewBinding.activityMainFrameLayout.id, fragment, tag)
+            }
+            setMaxLifecycle(fragment, Lifecycle.State.RESUMED)
         }
         return true
     }
