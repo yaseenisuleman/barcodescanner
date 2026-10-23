@@ -27,6 +27,7 @@ import androidx.fragment.app.commit
 import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.databinding.ActivityBarcodeScanOnlyBinding
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainCameraXScannerFragment
+import com.google.android.material.appbar.AppBarLayout
 import org.koin.android.ext.android.inject
 
 class BarcodeScanOnlyActivity : BaseActivity() {
@@ -40,6 +41,8 @@ class BarcodeScanOnlyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setSupportActionBar(viewBinding.activityMainActivityLayout.toolbar)
+        // Toolbar fixe : les boutons en bas de l'écran de scan restent visibles
+        (viewBinding.activityMainActivityLayout.toolbar.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
 
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(false)// On n'affiche pas l'icone "retour" dans la MainActivity

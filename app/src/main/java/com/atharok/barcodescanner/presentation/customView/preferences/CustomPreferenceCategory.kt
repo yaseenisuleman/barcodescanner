@@ -41,7 +41,7 @@ class CustomPreferenceCategory: PreferenceCategory {
 
         holder.itemView.let {
             val titleView: TextView? = it.findViewById(android.R.id.title)
-            titleView?.setTextAppearance(R.style.AppTheme_TextView_Appearance_Title_Variant)
+            titleView?.setTextAppearance(R.style.AppTheme_TextView_Appearance_SectionLabel)
         }
     }
 }

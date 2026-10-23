@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +10,8 @@
     <com.atharok.barcodescanner.presentation.customView.ActivityLayout
         android:id="@+id/activity_barcode_analysis_activity_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/action_bar_height">
 
         <FrameLayout
             android:id="@+id/activity_barcode_analysis_content"
@@ -17,6 +19,38 @@
             android:layout_height="wrap_content"/>
 
     </com.atharok.barcodescanner.presentation.customView.ActivityLayout>
+
+    <!-- Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:layout_gravity="bottom"
+        android:background="?android:colorBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/large_margin"
+        android:paddingEnd="@dimen/large_margin">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/activity_barcode_analysis_add_to_count_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:text="@string/add_to_count_label"
+            app:icon="@drawable/baseline_add_24"
+            style="@style/AppTheme.MaterialButton.Outlined" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/activity_barcode_analysis_scan_next_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/scan_next_label"
+            app:icon="@drawable/baseline_qr_code_scanner_24"
+            style="@style/AppTheme.MaterialButton.Large" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/activity_barcode_analysis_progress_bar"

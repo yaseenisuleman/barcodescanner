@@ -37,12 +37,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/fragment_barcode_about_overview_barcode_image_frame_layout" />
 
+    <!-- Stock Count -->
+    <com.atharok.barcodescanner.presentation.customView.StockCountView
+        android:id="@+id/fragment_barcode_about_overview_stock_count_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_barcode_about_overview_barcode_contents_frame_layout" />
+
     <!-- More Info -->
     <FrameLayout
         android:id="@+id/fragment_barcode_about_overview_more_info_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fragment_barcode_about_overview_barcode_contents_frame_layout" />
+        android:layout_below="@id/fragment_barcode_about_overview_stock_count_view" />
 
     <!-- Actions Title -->
     <FrameLayout

@@ -922,4 +922,50 @@
     <string name="locale_language_tr" translatable="false">Türkçe</string>
     <string name="locale_language_uk" translatable="false">Українська</string>
     <string name="locale_language_vi" translatable="false">Tiếng Việt</string>
+
+    <!-- Redesigned interface -->
+    <string name="title_vault">Vault</string>
+    <string name="header_scan_subtitle">Ready to scan</string>
+    <string name="header_history_subtitle">Your scanned barcodes</string>
+    <string name="header_generate_subtitle">Create a barcode</string>
+    <string name="header_settings_subtitle">App preferences</string>
+    <string name="header_vault_title">Stock Vault</string>
+    <string name="header_vault_subtitle">Active Stock Count</string>
+    <string name="status_synced">Synced</string>
+    <string name="status_pending">Pending</string>
+    <string name="scan_format_label">Scan format</string>
+    <string name="torch_label">Torch</string>
+    <string name="gallery_label">Gallery</string>
+    <string name="zoom_ratio_label">%1$.1fx</string>
+    <string name="look_up_item_label">Look up item</string>
+    <string name="scan_next_label">Scan Next</string>
+    <string name="add_to_count_label">Add to Count</string>
+    <string name="export_csv_button_label">Export CSV</string>
+    <string name="vault_search_hint">Search by item, SKU or barcode…</string>
+    <string name="vault_filter_all">All (48)</string>
+    <string name="vault_filter_scanned">Scanned (36)</string>
+    <string name="vault_filter_pending">Pending (8)</string>
+    <string name="vault_filter_issues">Issues (4)</string>
+    <string name="vault_sku_label">SKU:  %1$s</string>
+    <string name="vault_counted_value">Counted:  %1$d / %2$d</string>
+    <string name="stock_location_label">Stock Location</string>
+    <string name="stock_location_value">Aisle 1 / A1</string>
+    <string name="stock_location_warehouse">Main Warehouse</string>
+    <string name="system_quantity_label">System Quantity</string>
+    <string name="system_quantity_source">(from ERP)</string>
+    <string name="counted_quantity_label">Counted Quantity</string>
+    <string name="counted_quantity_source">(you)</string>
+    <string name="quantity_label">Quantity</string>
+    <string name="discrepancy_label">Discrepancy</string>
+    <string name="discrepancy_value">+%1$d   (System: %2$d  /  Counted: %3$d)</string>
+    <string name="discrepancy_value_negative">-%1$d   (System: %2$d  /  Counted: %3$d)</string>
+    <string name="notes_label">Notes</string>
+    <string name="notes_optional_label">(Optional)</string>
+    <string name="notes_hint">Add a note…</string>
+    <string name="last_scanned_label">Last Scanned</string>
+    <string name="counted_by_label">Counted By</string>
+    <string name="counted_by_value">You</string>
+    <string name="decrease_label">Decrease</string>
+    <string name="increase_label">Increase</string>
+    <string name="placeholder_not_available">Not available yet</string>
 </resources>

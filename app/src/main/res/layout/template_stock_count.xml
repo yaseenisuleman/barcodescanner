@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:orientation="vertical">
+
+    <!-- Stock Location -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/large_margin">
+
+            <ImageView
+                android:layout_width="@dimen/icon_x_large_size"
+                android:layout_height="@dimen/icon_x_large_size"
+                android:padding="@dimen/normal_margin"
+                android:background="@drawable/icon_badge"
+                android:src="@drawable/baseline_place_24"
+                app:tint="?colorOnPrimaryContainer"
+                android:contentDescription="@string/image_view_description_icon" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stock_location_label"
+                    style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stock_location_value"
+                    style="@style/AppTheme.TextView.Appearance.Title.Primary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/normal_margin"
+                android:background="@drawable/status_badge"
+                android:backgroundTint="?colorTertiaryContainer"
+                android:textColor="?colorOnTertiaryContainer"
+                android:text="@string/stock_location_warehouse"
+                style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- System / Counted Quantity -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/medium_margin">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_x_large_size"
+                    android:layout_height="@dimen/icon_x_large_size"
+                    android:padding="@dimen/normal_margin"
+                    android:background="@drawable/icon_badge"
+                    android:backgroundTint="?colorTertiaryContainer"
+                    android:src="@drawable/outline_database_24"
+                    app:tint="?colorOnTertiaryContainer"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/system_quantity_label"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+                    <TextView
+                        android:id="@+id/template_stock_count_system_quantity_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="10"
+                        style="@style/AppTheme.TextView.Appearance.Value" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/system_quantity_source"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/medium_margin">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_x_large_size"
+                    android:layout_height="@dimen/icon_x_large_size"
+                    android:padding="@dimen/normal_margin"
+                    android:background="@drawable/icon_badge"
+                    android:src="@drawable/ic_bar_code_24"
+                    app:tint="?colorOnPrimaryContainer"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/counted_quantity_label"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+                    <TextView
+                        android:id="@+id/template_stock_count_counted_quantity_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="12"
+                        style="@style/AppTheme.TextView.Appearance.Value" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/counted_quantity_source"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <!-- Quantity -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/large_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/outline_aspect_ratio_24"
+                android:drawablePadding="@dimen/normal_margin"
+                android:drawableTint="?colorOnSurfaceVariant"
+                android:gravity="center_vertical"
+                android:text="@string/quantity_label"
+                style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/template_stock_count_decrease_button"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/baseline_remove_24"
+                    app:iconPadding="0dp"
+                    app:iconGravity="textStart"
+                    android:minHeight="@dimen/button_large_height"
+                    android:contentDescription="@string/decrease_label"
+                    style="@style/AppTheme.MaterialButton.Tile" />
+
+                <TextView
+                    android:id="@+id/template_stock_count_quantity_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_large_height"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginEnd="@dimen/normal_margin"
+                    android:background="@drawable/stock_quantity_background"
+                    android:gravity="center"
+                    tools:text="12"
+                    style="@style/AppTheme.TextView.Appearance.Value" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/template_stock_count_increase_button"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/baseline_add_24"
+                    app:iconPadding="0dp"
+                    app:iconGravity="textStart"
+                    android:minHeight="@dimen/button_large_height"
+                    android:contentDescription="@string/increase_label"
+                    style="@style/AppTheme.MaterialButton.Tile" />
+            </LinearLayout>
+
+            <!-- Discrepancy -->
+            <LinearLayout
+                android:id="@+id/template_stock_count_discrepancy_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="@drawable/stock_discrepancy_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/medium_margin">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_large_size"
+                    android:layout_height="@dimen/icon_large_size"
+                    android:src="@drawable/baseline_warning_24"
+                    app:tint="?colorError"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/discrepancy_label"
+                        android:textColor="?colorError"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+
+                    <TextView
+                        android:id="@+id/template_stock_count_discrepancy_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?colorError"
+                        android:fontFamily="monospace"
+                        tools:text="+2   (System: 10  /  Counted: 12)"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Notes -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/large_margin">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_standard_size"
+                    android:layout_height="@dimen/icon_standard_size"
+                    android:src="@drawable/baseline_create_24"
+                    app:tint="?colorTertiary"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:text="@string/notes_label"
+                    style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:text="@string/notes_optional_label"
+                    style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin"
+                app:counterEnabled="true"
+                app:counterMaxLength="200"
+                app:hintEnabled="false"
+                style="@style/AppTheme.TextInputLayoutStyle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top|start"
+                    android:hint="@string/notes_hint"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:maxLength="200"
+                    android:minLines="2"
+                    android:textAppearance="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Last Scanned / Counted By -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:padding="@dimen/large_margin">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_standard_size"
+                    android:layout_height="@dimen/icon_standard_size"
+                    android:src="@drawable/outline_schedule_24"
+                    app:tint="?colorOnSurfaceVariant"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/last_scanned_label"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+                    <TextView
+                        android:id="@+id/template_stock_count_last_scanned_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="2026-10-23 09:24"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_standard_size"
+                    android:layout_height="@dimen/icon_standard_size"
+                    android:src="@drawable/outline_person_24"
+                    app:tint="?colorOnSurfaceVariant"
+                    android:contentDescription="@string/image_view_description_icon" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/counted_by_label"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/counted_by_value"
+                        style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</merge>

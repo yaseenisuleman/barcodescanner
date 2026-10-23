@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.views.fragments.main.MainVaultFragment">
+
+    <!-- Search -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:startIconDrawable="@drawable/baseline_search_24"
+            app:boxBackgroundColor="?colorSurfaceContainerLowest"
+            app:boxStrokeColor="?colorOutlineVariant"
+            app:hintEnabled="false"
+            style="@style/AppTheme.TextInputLayoutStyle.Dense">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/vault_search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textAppearance="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_vault_filter_button"
+            android:layout_width="52dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:insetTop="4dp"
+            android:insetBottom="4dp"
+            app:icon="@drawable/baseline_filter_list_24"
+            app:iconPadding="0dp"
+            app:iconGravity="textStart"
+            android:contentDescription="@string/scan_format_label"
+            style="@style/AppTheme.MaterialButton.Tile" />
+    </LinearLayout>
+
+    <!-- Filters -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:paddingStart="@dimen/large_margin"
+        android:paddingEnd="@dimen/large_margin"
+        android:clipToPadding="false"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedChip="@id/fragment_main_vault_filter_all_chip"
+            app:chipSpacingHorizontal="@dimen/normal_margin">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/fragment_main_vault_filter_all_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/vault_filter_all"
+                app:chipIconVisible="false"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/vault_filter_scanned"
+                app:chipIconVisible="false"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/vault_filter_pending"
+                app:chipIconVisible="false"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/vault_filter_issues"
+                app:chipIconVisible="false"
+                style="@style/AppTheme.Chip.Format" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Items -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingStart="@dimen/medium_margin"
+        android:paddingEnd="@dimen/medium_margin"
+        android:paddingTop="@dimen/small_margin">
+
+        <LinearLayout
+            android:id="@+id/fragment_main_vault_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/large_margin"
+        android:paddingEnd="@dimen/large_margin"
+        android:paddingTop="@dimen/normal_margin"
+        android:paddingBottom="@dimen/normal_margin">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_vault_scan_next_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:text="@string/scan_next_label"
+            app:icon="@drawable/baseline_qr_code_scanner_24"
+            style="@style/AppTheme.MaterialButton.Large" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_vault_export_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/export_csv_button_label"
+            app:icon="@drawable/baseline_ios_share_24"
+            style="@style/AppTheme.MaterialButton.Outlined" />
+    </LinearLayout>
+
+</LinearLayout>

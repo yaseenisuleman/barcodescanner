@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/medium_margin">
+
+        <FrameLayout
+            android:id="@+id/recycler_view_item_vault_image_layout"
+            android:layout_width="@dimen/vault_item_image_size"
+            android:layout_height="@dimen/vault_item_image_size"
+            android:background="@drawable/icon_badge"
+            android:backgroundTint="?colorSurfaceContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/recycler_view_item_vault_image_view"
+                android:layout_width="@dimen/icon_large_size"
+                android:layout_height="@dimen/icon_large_size"
+                android:layout_gravity="center"
+                android:src="@drawable/outline_inventory_24"
+                app:tint="?colorOnSurfaceVariant"
+                android:contentDescription="@string/image_view_description_icon" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_sku_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:textAlignment="viewStart"
+            tools:text="SKU:  EX-001"
+            style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/recycler_view_item_vault_image_layout"
+            app:layout_constraintEnd_toStartOf="@id/recycler_view_item_vault_status_text_view" />
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_status_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/status_dot"
+            tools:text="@string/status_synced"
+            style="@style/AppTheme.TextView.Badge"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/thin_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAlignment="viewStart"
+            tools:text="Example Stock Item"
+            style="@style/AppTheme.TextView.Appearance.Title.Primary"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_item_vault_sku_text_view"
+            app:layout_constraintStart_toEndOf="@id/recycler_view_item_vault_image_layout"
+            app:layout_constraintEnd_toStartOf="@id/recycler_view_item_vault_chevron_image_view" />
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_barcode_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/thin_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:textAlignment="viewStart"
+            tools:text="6001234567890"
+            style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_item_vault_title_text_view"
+            app:layout_constraintStart_toEndOf="@id/recycler_view_item_vault_image_layout"
+            app:layout_constraintEnd_toStartOf="@id/recycler_view_item_vault_chevron_image_view" />
+
+        <ImageView
+            android:id="@+id/recycler_view_item_vault_chevron_image_view"
+            android:layout_width="@dimen/icon_standard_size"
+            android:layout_height="@dimen/icon_standard_size"
+            android:src="@drawable/outline_chevron_right_24"
+            app:tint="?colorOnSurfaceVariant"
+            android:contentDescription="@string/image_view_description_icon"
+            app:layout_constraintTop_toTopOf="@id/recycler_view_item_vault_title_text_view"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view_item_vault_barcode_text_view"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/recycler_view_item_vault_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="recycler_view_item_vault_image_layout,recycler_view_item_vault_barcode_text_view" />
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_location_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:drawableStart="@drawable/baseline_place_24"
+            android:drawablePadding="@dimen/small_margin"
+            android:drawableTint="?colorOnSurfaceVariant"
+            android:gravity="center_vertical"
+            tools:text="Aisle 1 / A1"
+            style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view_item_vault_barrier"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/recycler_view_item_vault_counted_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Counted:  12 / 12"
+            style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+            app:layout_constraintTop_toTopOf="@id/recycler_view_item_vault_location_text_view"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view_item_vault_location_text_view"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

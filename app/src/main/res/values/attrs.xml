@@ -11,6 +11,8 @@
         <attr name="viewfinder_corner_thickness" format="dimension" />
         <attr name="viewfinder_corner_color" format="color" />
         <attr name="overlay_mask_color" format="color" />
+        <attr name="viewfinder_corner_length" format="dimension" />
+        <attr name="scan_line_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="BarcodeParsedView">

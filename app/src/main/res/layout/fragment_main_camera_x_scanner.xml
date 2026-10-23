@@ -1,67 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/large_margin"
+    android:paddingEnd="@dimen/large_margin"
+    android:paddingBottom="@dimen/large_margin"
     tools:context=".presentation.views.fragments.main.MainCameraXScannerFragment">
 
+    <!-- Scan format -->
     <TextView
-        android:id="@+id/fragment_main_camera_x_scanner_camera_permission_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/normal_margin"
-        android:text="@string/camera_permission_denied"
-        android:textAlignment="center"
-        android:visibility="gone"
-        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+        android:text="@string/scan_format_label"
+        style="@style/AppTheme.TextView.Appearance.SectionLabel" />
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/fragment_main_camera_x_scanner_preview_view"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone" />
-
-    <com.atharok.barcodescanner.presentation.customView.ScanOverlay
-        android:id="@+id/fragment_main_camera_x_scanner_scan_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:viewfinder_radius="50dp"
-        app:viewfinder_corner_thickness="4dp"
-        app:viewfinder_corner_color="@android:color/white"
-        app:overlay_mask_color="@color/overlay_mask"
-        android:visibility="gone" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/fragment_main_camera_x_scanner_slider"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="@dimen/large_margin"
-        android:value="0.5"
-        android:valueFrom="0.0"
-        android:valueTo="1"
-        app:labelBehavior="gone"
-        android:contentDescription="@string/slider_description_zoom"
-        android:visibility="gone" />
-
-    <FrameLayout
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/large_margin"
-        android:layout_gravity="top|center_horizontal">
+        android:layout_marginTop="@dimen/normal_margin"
+        android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/fragment_main_camera_x_scanner_information_text_view"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/fragment_main_camera_x_scanner_format_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/scan_information_label"
-            android:visibility="gone"
-            android:background="@drawable/pill"
-            android:textColor="@android:color/white"
-            style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
-    </FrameLayout>
+            app:singleLine="true"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedChip="@id/fragment_main_camera_x_scanner_format_ean_13_chip"
+            app:chipSpacingHorizontal="@dimen/normal_margin">
 
-</FrameLayout>
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/barcode_qr_code_label"
+                app:chipIcon="@drawable/baseline_qr_code_24"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/fragment_main_camera_x_scanner_format_ean_13_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/barcode_ean_13_label"
+                app:chipIcon="@drawable/baseline_qr_code_scanner_24"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/barcode_code_128_label"
+                app:chipIcon="@drawable/ic_bar_code_24"
+                style="@style/AppTheme.Chip.Format" />
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="false"
+                app:chipIcon="@drawable/baseline_keyboard_arrow_down_24"
+                app:textStartPadding="0dp"
+                app:textEndPadding="0dp"
+                app:chipEndPadding="@dimen/small_margin"
+                android:contentDescription="@string/scan_format_label"
+                style="@style/AppTheme.Chip.Format" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Camera -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/medium_margin"
+        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="@dimen/camera_card_corner_radius"
+        app:cardBackgroundColor="@android:color/black"
+        app:strokeWidth="0dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/fragment_main_camera_x_scanner_camera_permission_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/large_margin"
+                android:text="@string/camera_permission_denied"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:visibility="gone"
+                style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/fragment_main_camera_x_scanner_preview_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone" />
+
+            <com.atharok.barcodescanner.presentation.customView.ScanOverlay
+                android:id="@+id/fragment_main_camera_x_scanner_scan_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/scan_overlay_bottom_margin"
+                app:viewfinder_radius="10dp"
+                app:viewfinder_corner_length="22dp"
+                app:viewfinder_corner_thickness="4dp"
+                app:viewfinder_corner_color="@color/scan_highlight"
+                app:scan_line_color="@color/scan_highlight"
+                app:overlay_mask_color="@color/scan_overlay_mask"
+                android:visibility="gone" />
+
+            <!-- Zoom -->
+            <TextView
+                android:id="@+id/fragment_main_camera_x_scanner_zoom_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="@dimen/medium_margin"
+                android:background="@drawable/camera_chip_background"
+                android:textColor="@android:color/white"
+                tools:text="1.0x"
+                style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+
+            <!-- Flash -->
+            <ImageButton
+                android:id="@+id/fragment_main_camera_x_scanner_flash_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="@dimen/medium_margin"
+                android:background="@drawable/camera_chip_background"
+                android:src="@drawable/baseline_flash_off_24"
+                app:tint="@android:color/white"
+                android:contentDescription="@string/flash_label" />
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/fragment_main_camera_x_scanner_slider"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginStart="@dimen/large_margin"
+                android:layout_marginEnd="@dimen/large_margin"
+                android:layout_marginBottom="@dimen/scan_slider_bottom_margin"
+                android:value="0.5"
+                android:valueFrom="0.0"
+                android:valueTo="1"
+                app:labelBehavior="gone"
+                app:trackHeight="4dp"
+                app:thumbHeight="20dp"
+                app:thumbWidth="4dp"
+                app:trackColorActive="@color/scan_highlight"
+                app:trackColorInactive="@color/scan_slider_track"
+                app:thumbColor="@android:color/white"
+                android:contentDescription="@string/slider_description_zoom"
+                android:visibility="gone" />
+
+            <!-- Status -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/fragment_main_camera_x_scanner_information_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/small_margin"
+                app:cardUseCompatPadding="false"
+                app:cardBackgroundColor="?colorSurfaceContainerLowest"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/large_margin">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_x_large_size"
+                        android:layout_height="@dimen/icon_x_large_size"
+                        android:src="@drawable/baseline_check_circle_24"
+                        app:tint="?colorPrimary"
+                        android:contentDescription="@string/image_view_description_icon" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/large_margin"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/header_scan_subtitle"
+                            android:textColor="?colorPrimary"
+                            style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/thin_margin"
+                            android:text="@string/scan_information_label"
+                            style="@style/AppTheme.TextView.Appearance.Title.Primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Torch / Gallery -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_camera_x_scanner_torch_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:checkable="true"
+            android:text="@string/torch_label"
+            app:icon="@drawable/baseline_flashlight_24"
+            style="@style/AppTheme.MaterialButton.Tile" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_camera_x_scanner_gallery_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/gallery_label"
+            app:icon="@drawable/baseline_image_24"
+            style="@style/AppTheme.MaterialButton.Tile" />
+    </LinearLayout>
+
+    <!-- Look up item -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment_main_camera_x_scanner_look_up_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_margin"
+        android:text="@string/look_up_item_label"
+        app:icon="@drawable/baseline_search_24"
+        style="@style/AppTheme.MaterialButton.Large" />
+
+</LinearLayout>

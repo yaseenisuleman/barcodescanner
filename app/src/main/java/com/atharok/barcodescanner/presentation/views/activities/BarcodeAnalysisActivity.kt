@@ -77,8 +77,18 @@ class BarcodeAnalysisActivity: BaseActivity() {
         intent?.serializable(BARCODE_KEY, Barcode::class.java)?.let { barcode: Barcode ->
             configureContentsView(barcode)
         }
+        configureActionButtons()
 
         setContentView(rootView)
+    }
+
+    private fun configureActionButtons() {
+        viewBinding.activityBarcodeAnalysisAddToCountButton.setOnClickListener {
+            showSnackbar(R.string.placeholder_not_available, it)
+        }
+        viewBinding.activityBarcodeAnalysisScanNextButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun configureContentsView(barcode: Barcode) {

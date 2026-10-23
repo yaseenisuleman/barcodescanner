@@ -2,6 +2,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -39,125 +40,130 @@
         android:layout_height="match_parent"
         app:cardUseCompatPadding="false">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/large_margin">
+            android:padding="@dimen/medium_margin">
 
             <ImageView
                 android:id="@+id/recycler_view_item_history_barcode_image_view"
-                android:layout_width="@dimen/icon_x_large_size"
-                android:layout_height="@dimen/icon_x_large_size"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/medium_margin"
+                android:layout_width="@dimen/history_item_image_size"
+                android:layout_height="@dimen/history_item_image_size"
+                android:padding="@dimen/medium_margin"
                 android:background="@drawable/icon_badge"
                 app:backgroundTint="?colorPrimaryContainer"
                 app:tint="?colorOnPrimaryContainer"
-                android:contentDescription="@string/image_view_description_type_icon" />
+                android:contentDescription="@string/image_view_description_type_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <RelativeLayout
+            <!-- Format (ex: QR_CODE) -->
+            <TextView
+                android:id="@+id/recycler_view_item_history_barcode_format_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                tools:text="QR_CODE"
+                style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/recycler_view_item_history_barcode_image_view"
+                app:layout_constraintEnd_toStartOf="@id/recycler_view_item_history_barcode_icon_image_view" />
+
+            <ImageView
+                android:id="@+id/recycler_view_item_history_barcode_icon_image_view"
+                android:layout_width="@dimen/icon_standard_size"
+                android:layout_height="@dimen/icon_standard_size"
+                android:padding="@dimen/small_margin"
+                android:background="@drawable/status_badge"
+                app:tint="?colorOnPrimaryContainer"
+                android:contentDescription="@string/image_view_description_bar_code"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/recycler_view_item_history_barcode_entitled_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/thin_margin"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                tools:text="Website"
+                style="@style/AppTheme.TextView.Appearance.Title.Primary"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_item_history_barcode_format_text_view"
+                app:layout_constraintStart_toEndOf="@id/recycler_view_item_history_barcode_image_view"
+                app:layout_constraintEnd_toStartOf="@id/recycler_view_item_history_barcode_chevron_image_view" />
+
+            <TextView
+                android:id="@+id/recycler_view_item_history_barcode_content_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/recycler_view_item_history_barcode_image_view"
-                android:layout_centerVertical="true">
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/thin_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAlignment="viewStart"
+                tools:text="https://example.com"
+                style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_item_history_barcode_entitled_text_view"
+                app:layout_constraintStart_toEndOf="@id/recycler_view_item_history_barcode_image_view"
+                app:layout_constraintEnd_toStartOf="@id/recycler_view_item_history_barcode_origin_flag_image_view" />
 
-                <RelativeLayout
-                    android:id="@+id/recycler_view_item_history_barcode_entitled_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/recycler_view_item_history_barcode_origin_flag_image_view"
+                android:layout_width="@dimen/icon_light_size"
+                android:layout_height="@dimen/icon_light_size"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:contentDescription="@string/image_view_description_flag"
+                app:layout_constraintTop_toTopOf="@id/recycler_view_item_history_barcode_content_text_view"
+                app:layout_constraintBottom_toBottomOf="@id/recycler_view_item_history_barcode_content_text_view"
+                app:layout_constraintStart_toEndOf="@id/recycler_view_item_history_barcode_content_text_view"
+                app:layout_constraintEnd_toStartOf="@id/recycler_view_item_history_barcode_chevron_image_view" />
 
-                    <TextView
-                        android:id="@+id/recycler_view_item_history_barcode_entitled_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/normal_margin"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@id/recycler_view_item_history_barcode_format_text_view"
-                        android:textAlignment="viewStart"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        style="@style/AppTheme.TextView.Appearance.Title.Primary" />
+            <ImageView
+                android:id="@+id/recycler_view_item_history_barcode_chevron_image_view"
+                android:layout_width="@dimen/icon_standard_size"
+                android:layout_height="@dimen/icon_standard_size"
+                android:src="@drawable/outline_chevron_right_24"
+                app:tint="?colorOnSurfaceVariant"
+                android:contentDescription="@string/image_view_description_icon"
+                app:layout_constraintTop_toTopOf="@id/recycler_view_item_history_barcode_entitled_text_view"
+                app:layout_constraintBottom_toBottomOf="@id/recycler_view_item_history_barcode_content_text_view"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                    <TextView
-                        android:id="@+id/recycler_view_item_history_barcode_format_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@id/recycler_view_item_history_barcode_icon_image_view"
-                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/recycler_view_item_history_barcode_barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="recycler_view_item_history_barcode_image_view,recycler_view_item_history_barcode_content_text_view" />
 
-                    <ImageView
-                        android:id="@+id/recycler_view_item_history_barcode_icon_image_view"
-                        android:layout_width="@dimen/icon_light_size"
-                        android:layout_height="@dimen/icon_light_size"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        app:tint="?android:attr/textColorSecondary"
-                        android:contentDescription="@string/image_view_description_bar_code" />
+            <!-- Date -->
+            <TextView
+                android:id="@+id/recycler_view_item_history_barcode_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:drawableStart="@drawable/baseline_history_24"
+                android:drawablePadding="@dimen/small_margin"
+                android:drawableTint="?colorOnSurfaceVariant"
+                android:gravity="center_vertical"
+                tools:text="22/10/2026"
+                style="@style/AppTheme.TextView.Appearance.Normal.Secondary"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_item_history_barcode_barrier"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/recycler_view_item_history_barcode_entitled_layout"
-                    android:layout_marginTop="@dimen/small_margin">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@id/recycler_view_item_history_barcode_date_image_view">
-                        <TextView
-                            android:id="@+id/recycler_view_item_history_barcode_content_text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginEnd="@dimen/normal_margin"
-                            android:textAlignment="viewStart"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
-
-                        <ImageView
-                            android:id="@+id/recycler_view_item_history_barcode_origin_flag_image_view"
-                            android:layout_width="@dimen/icon_light_size"
-                            android:layout_height="@dimen/icon_light_size"
-                            android:layout_centerVertical="true"
-                            android:layout_toEndOf="@id/recycler_view_item_history_barcode_content_text_view"
-                            android:contentDescription="@string/image_view_description_flag" />
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/recycler_view_item_history_barcode_date_image_view"
-                        android:layout_width="@dimen/icon_standard_size"
-                        android:layout_height="@dimen/icon_standard_size"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@id/recycler_view_item_history_barcode_date_text_view"
-                        android:src="@drawable/baseline_history_24"
-                        app:tint="?android:attr/textColorSecondary"
-                        android:contentDescription="@string/image_view_description_icon" />
-
-                    <TextView
-                        android:id="@+id/recycler_view_item_history_barcode_date_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:layout_alignParentEnd="true"
-                        style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

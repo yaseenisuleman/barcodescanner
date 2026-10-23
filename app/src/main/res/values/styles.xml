@@ -78,9 +78,15 @@
     <!-- BottomNavigationView -->
     <style name="AppTheme.BottomNavigationView.Style" parent="Widget.Material3.BottomNavigationView">
         <item name="itemActiveIndicatorStyle">@style/AppTheme.BottomNavigationView.ActiveIndicator.Style</item>
+        <item name="backgroundTint">?colorSurfaceContainerLowest</item>
+        <item name="itemIconTint">@color/nav_item_color</item>
+        <item name="itemTextColor">@color/nav_item_color</item>
+        <item name="itemRippleColor">?colorPrimaryContainer</item>
     </style>
 
-    <style name="AppTheme.BottomNavigationView.ActiveIndicator.Style" parent="Widget.Material3.BottomNavigationView.ActiveIndicator" />
+    <style name="AppTheme.BottomNavigationView.ActiveIndicator.Style" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
 
     <style name="AppTheme.BottomNavigationView.Label.Active" parent="TextAppearance.Material3.LabelMedium">
         <item name="fontFamily">@string/title_font</item>
@@ -142,6 +148,14 @@
         <item name="boxCornerRadiusBottomEnd">@dimen/text_input_corner_radius</item>
     </style>
 
+    <style name="AppTheme.TextInputLayoutStyle.Dense" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
+        <item name="startIconTint">?android:textColorSecondary</item>
+        <item name="boxCornerRadiusTopStart">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/text_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/text_input_corner_radius</item>
+    </style>
+
     <style name="AppTheme.InputEditTextCaptionFont" parent="">
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
@@ -164,10 +178,86 @@
 
     <!-- Material Button -->
     <style name="AppTheme.MaterialButton" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
         <item name="fontFamily">@string/title_font</item>
         <item name="android:fontFamily">@string/title_font</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
+    <style name="AppTheme.MaterialButton.Large">
+        <item name="android:minHeight">@dimen/button_large_height</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/medium_margin</item>
+    </style>
+
+    <style name="AppTheme.MaterialButton.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:minHeight">@dimen/button_large_height</item>
+        <item name="strokeColor">?colorPrimary</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="iconTint">?colorPrimary</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/medium_margin</item>
+        <item name="fontFamily">@string/title_font</item>
+        <item name="android:fontFamily">@string/title_font</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
+    <!-- Tile button (Torch, Gallery) -->
+    <style name="AppTheme.MaterialButton.Tile" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:minHeight">@dimen/tile_button_height</item>
+        <item name="strokeColor">@color/format_chip_stroke</item>
+        <item name="backgroundTint">@color/format_chip_background</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="iconTint">?colorOnSurface</item>
+        <item name="iconGravity">top</item>
+        <item name="iconPadding">@dimen/small_margin</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
+    <!-- Scan format chip -->
+    <style name="AppTheme.Chip.Format" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/format_chip_background</item>
+        <item name="chipStrokeColor">@color/format_chip_stroke</item>
+        <item name="chipStrokeWidth">@dimen/stroke_width</item>
+        <item name="chipCornerRadius">@dimen/button_corner_radius</item>
+        <item name="chipMinHeight">@dimen/format_chip_height</item>
+        <item name="chipIconTint">@color/format_chip_text</item>
+        <item name="chipIconVisible">true</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="android:textColor">@color/format_chip_text</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <!-- Status badge (Synced, Pending) -->
+    <style name="AppTheme.TextView.Badge" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:background">@drawable/status_badge</item>
+        <item name="android:backgroundTint">?colorPrimaryContainer</item>
+        <item name="android:textColor">?colorOnPrimaryContainer</item>
+        <item name="android:textSize">@dimen/label_text_size</item>
+        <item name="android:drawablePadding">@dimen/small_margin</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- Section label (SCAN FORMAT) -->
+    <style name="AppTheme.TextView.Appearance.SectionLabel" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">?colorOnSurfaceVariant</item>
+        <item name="android:textSize">@dimen/label_text_size</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.04</item>
+    </style>
+
+    <!-- Large value (Quantity, barcode) -->
+    <style name="AppTheme.TextView.Appearance.Value" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@string/title_font</item>
+        <item name="android:fontFamily">@string/title_font</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <!-- DialogTextButtonStyle -->

@@ -139,7 +139,12 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
             requestPermissions()
         }
 
-        configureMenu()
+        // Les boutons Torch / Gallery ne sont présents qu'en mode portrait, sinon on utilise le menu
+        if (viewBinding.fragmentMainCameraXScannerTorchButton != null) {
+            configureButtons()
+        } else {
+            configureMenu()
+        }
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -227,6 +232,33 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    // ---- Buttons ----
+
+    private fun configureButtons() {
+        val hasFlash = requireContext().hasFlash()
+        viewBinding.fragmentMainCameraXScannerTorchButton?.apply {
+            isEnabled = hasFlash
+            setOnClickListener { switchFlash() }
+        }
+        viewBinding.fragmentMainCameraXScannerFlashButton?.apply {
+            visibility = if (hasFlash) View.VISIBLE else View.GONE
+            setOnClickListener { switchFlash() }
+        }
+        viewBinding.fragmentMainCameraXScannerGalleryButton?.setOnClickListener {
+            startBarcodeScanFromImageActivity()
+        }
+        viewBinding.fragmentMainCameraXScannerLookUpButton?.setOnClickListener {
+            showSnackbar(getString(R.string.placeholder_not_available))
+        }
+        viewBinding.fragmentMainCameraXScannerZoomTextView?.text = getString(R.string.zoom_ratio_label, 1f)
+    }
+
+    private fun updateFlashButtons() {
+        val icon = if (flashEnabled) R.drawable.baseline_flash_on_24 else R.drawable.baseline_flash_off_24
+        viewBinding.fragmentMainCameraXScannerFlashButton?.setImageResource(icon)
+        viewBinding.fragmentMainCameraXScannerTorchButton?.isChecked = flashEnabled
     }
 
     // ---- Camera Permission ----
@@ -444,6 +476,9 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
             .attach(viewBinding.fragmentMainCameraXScannerScanOverlay) { value ->
                 slider.value = value
             }
+        camera?.cameraInfo?.zoomState?.observe(viewLifecycleOwner) { zoomState ->
+            viewBinding.fragmentMainCameraXScannerZoomTextView?.text = getString(R.string.zoom_ratio_label, zoomState.zoomRatio)
+        }
     }
 
     private fun setLinearZoom(value: Float) {
@@ -459,6 +494,9 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         camera?.let {
             flashEnabled = !flashEnabled
             it.cameraControl.enableTorch(flashEnabled)
+        }
+        if (_binding != null) {
+            updateFlashButtons()
         }
     }
 

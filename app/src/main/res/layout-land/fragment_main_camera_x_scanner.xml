@@ -27,10 +27,12 @@
         android:id="@+id/fragment_main_camera_x_scanner_scan_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:viewfinder_radius="50dp"
+        app:viewfinder_radius="10dp"
+        app:viewfinder_corner_length="22dp"
         app:viewfinder_corner_thickness="4dp"
-        app:viewfinder_corner_color="@android:color/white"
-        app:overlay_mask_color="@color/overlay_mask"
+        app:viewfinder_corner_color="@color/scan_highlight"
+        app:scan_line_color="@color/scan_highlight"
+        app:overlay_mask_color="@color/scan_overlay_mask"
         android:visibility="gone" />
 
     <FrameLayout

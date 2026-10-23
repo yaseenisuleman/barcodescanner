@@ -8,6 +8,12 @@
         android:title="@string/title_scan" />
 
     <item
+        android:id="@+id/menu_navigation_bottom_view_vault"
+        android:enabled="true"
+        android:icon="@drawable/outline_inventory_24"
+        android:title="@string/title_vault"/>
+
+    <item
         android:id="@+id/menu_navigation_bottom_view_history"
         android:enabled="true"
         android:icon="@drawable/animated_selector_history"

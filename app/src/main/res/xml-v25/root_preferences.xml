@@ -11,7 +11,7 @@
             android:summary="%s"
             android:entries="@array/preference_color_entries"
             android:entryValues="@array/preference_color_values"
-            app:defaultValue="blue" />
+            app:defaultValue="green" />
 
         <com.atharok.barcodescanner.presentation.customView.preferences.CustomListPreference
             app:key="@string/preferences_theme_key"

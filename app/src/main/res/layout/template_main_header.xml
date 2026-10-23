@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/medium_margin"
+    android:paddingBottom="@dimen/medium_margin"
+    android:paddingEnd="@dimen/large_margin">
+
+    <FrameLayout
+        android:id="@+id/template_main_header_tile"
+        android:layout_width="@dimen/header_tile_size"
+        android:layout_height="@dimen/header_tile_size"
+        android:background="@drawable/header_tile"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/template_main_header_icon"
+            android:layout_width="@dimen/icon_large_size"
+            android:layout_height="@dimen/icon_large_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_bar_code_24"
+            app:tint="@color/header_tile_icon"
+            android:contentDescription="@string/image_view_description_icon" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/template_main_header_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="viewStart"
+        tools:text="@string/app_name"
+        style="@style/AppTheme.ToolBar.TextAppearance"
+        app:layout_constraintTop_toTopOf="@id/template_main_header_tile"
+        app:layout_constraintBottom_toTopOf="@id/template_main_header_subtitle"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/template_main_header_tile"
+        app:layout_constraintEnd_toStartOf="@id/template_main_header_end" />
+
+    <TextView
+        android:id="@+id/template_main_header_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:drawablePadding="@dimen/normal_margin"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAlignment="viewStart"
+        tools:text="@string/header_scan_subtitle"
+        style="@style/AppTheme.TextView.Appearance.Subtitle"
+        app:layout_constraintTop_toBottomOf="@id/template_main_header_title"
+        app:layout_constraintBottom_toBottomOf="@id/template_main_header_tile"
+        app:layout_constraintStart_toEndOf="@id/template_main_header_tile"
+        app:layout_constraintEnd_toStartOf="@id/template_main_header_end" />
+
+    <FrameLayout
+        android:id="@+id/template_main_header_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/template_main_header_settings_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/baseline_settings_24"
+            app:tint="?colorOnSurface"
+            android:contentDescription="@string/title_settings" />
+
+        <TextView
+            android:id="@+id/template_main_header_synced_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/baseline_cloud_done_24"
+            android:drawableTint="?colorPrimary"
+            android:gravity="center"
+            android:text="@string/status_synced"
+            android:visibility="gone"
+            style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,19 +24,27 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commitNow
 import com.atharok.barcodescanner.BuildConfig
 import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.databinding.ActivityMainBinding
+import com.atharok.barcodescanner.databinding.TemplateMainHeaderBinding
 import com.atharok.barcodescanner.presentation.viewmodel.DynamicShortcutViewModel
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeCreatorListFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeHistoryFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainCameraXScannerFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainSettingsFragment
+import com.atharok.barcodescanner.presentation.views.fragments.main.MainVaultFragment
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.shape.MaterialShapeDrawable
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -55,9 +63,14 @@ class MainActivity: BaseActivity() {
     private val mainHistoryFragment: MainBarcodeHistoryFragment by inject()
     private val mainBarcodeCreatorListFragment: MainBarcodeCreatorListFragment by inject()
     private val mainSettingsFragment: MainSettingsFragment by inject()
+    private val mainVaultFragment: MainVaultFragment by inject()
 
     private val viewBinding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     override val rootView: View get() = viewBinding.root
+
+    private val headerBinding: TemplateMainHeaderBinding by lazy {
+        TemplateMainHeaderBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +87,10 @@ class MainActivity: BaseActivity() {
         setSupportActionBar(viewBinding.activityMainActivityLayout.toolbar)
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(false)// On n'affiche pas l'icone "retour" dans la MainActivity
+            it.setDisplayShowTitleEnabled(false)
             it.setTitle(titleRes)
         }
+        configureHeader(viewBinding.activityMainActivityLayout.toolbar)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             configureNavigationRailView()
@@ -106,6 +121,59 @@ class MainActivity: BaseActivity() {
             }
         }
     }
+
+    private fun configureHeader(toolbar: MaterialToolbar) {
+        toolbar.addView(headerBinding.root, Toolbar.LayoutParams(
+            Toolbar.LayoutParams.MATCH_PARENT,
+            Toolbar.LayoutParams.WRAP_CONTENT
+        ))
+        // Header fixe : le contenu (caméra, boutons du bas) garde toute sa hauteur visible
+        (toolbar.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
+        headerBinding.templateMainHeaderSettingsButton.setOnClickListener {
+            selectItem(R.id.menu_navigation_bottom_view_settings)
+        }
+    }
+
+    private fun updateHeader(id: Int) {
+        when (id) {
+            R.id.menu_navigation_bottom_view_scan -> showHeader(R.string.app_name, R.string.header_scan_subtitle, R.drawable.ic_bar_code_24, highlighted = true)
+            R.id.menu_navigation_bottom_view_vault -> showHeader(R.string.header_vault_title, R.string.header_vault_subtitle, R.drawable.outline_inventory_24)
+            R.id.menu_navigation_bottom_view_history -> showHeader(R.string.title_history, R.string.header_history_subtitle, R.drawable.baseline_history_24)
+            R.id.menu_navigation_bottom_view_create -> showHeader(R.string.title_bar_code_creator, R.string.header_generate_subtitle, R.drawable.baseline_create_24)
+            R.id.menu_navigation_bottom_view_settings -> showHeader(R.string.title_settings, R.string.header_settings_subtitle, R.drawable.baseline_settings_24)
+        }
+        headerBinding.templateMainHeaderSettingsButton.visibility =
+            if (id == R.id.menu_navigation_bottom_view_scan) View.VISIBLE else View.GONE
+        headerBinding.templateMainHeaderSyncedTextView.visibility =
+            if (id == R.id.menu_navigation_bottom_view_vault) View.VISIBLE else View.GONE
+    }
+
+    /**
+     * Le "highlighted" header (onglet Scan) utilise une tuile sombre et un statut vert.
+     */
+    private fun showHeader(@StringRes title: Int, @StringRes subtitle: Int, @DrawableRes icon: Int, highlighted: Boolean = false) {
+        headerBinding.templateMainHeaderTitle.setText(title)
+        headerBinding.templateMainHeaderSubtitle.setText(subtitle)
+        headerBinding.templateMainHeaderIcon.setImageResource(icon)
+        if (highlighted) {
+            headerBinding.templateMainHeaderTile.setBackgroundResource(R.drawable.header_tile)
+            headerBinding.templateMainHeaderIcon.setColorFilter(getColor(R.color.header_tile_icon))
+            headerBinding.templateMainHeaderSubtitle.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.status_dot, 0, 0, 0)
+            headerBinding.templateMainHeaderSubtitle.setTextColor(MaterialColors.getColor(headerBinding.root, androidx.appcompat.R.attr.colorPrimary))
+        } else {
+            headerBinding.templateMainHeaderTile.setBackgroundResource(R.drawable.icon_badge)
+            headerBinding.templateMainHeaderIcon.setColorFilter(MaterialColors.getColor(headerBinding.root, com.google.android.material.R.attr.colorOnPrimaryContainer))
+            headerBinding.templateMainHeaderSubtitle.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0)
+            headerBinding.templateMainHeaderSubtitle.setTextColor(MaterialColors.getColor(headerBinding.root, com.google.android.material.R.attr.colorOnSurfaceVariant))
+        }
+    }
+
+    private fun selectItem(id: Int) {
+        viewBinding.activityMainMenuBottomNavigation?.selectedItemId = id
+        viewBinding.activityMainNavigationRail?.selectedItemId = id
+    }
+
+    fun showScanTab() = selectItem(R.id.menu_navigation_bottom_view_scan)
 
     private fun configureBottomNavigationMenu() {
         viewBinding.activityMainMenuBottomNavigation?.let { bottomNavigationView ->
@@ -151,10 +219,16 @@ class MainActivity: BaseActivity() {
 
     private fun changeView(id: Int): Boolean {
         currentItemId = id
+        updateHeader(id)
         return when (id) {
             R.id.menu_navigation_bottom_view_scan -> changeFragment(
                 mainCameraXScannerFragment,
                 R.string.title_scan
+            )
+
+            R.id.menu_navigation_bottom_view_vault -> changeFragment(
+                mainVaultFragment,
+                R.string.header_vault_title
             )
 
             R.id.menu_navigation_bottom_view_history -> changeFragment(

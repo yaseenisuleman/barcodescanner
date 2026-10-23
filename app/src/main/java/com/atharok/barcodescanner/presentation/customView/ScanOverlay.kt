@@ -22,10 +22,12 @@ package com.atharok.barcodescanner.presentation.customView
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
@@ -57,6 +59,13 @@ class ScanOverlay @JvmOverloads constructor(
 
     private val viewfinderCornerPaint: Paint
 
+    // Longueur des segments droits des coins (0 = coins en arc uniquement)
+    private val viewfinderCornerLength: Float
+    private val viewfinderCornerPath: Path = Path()
+
+    private val scanLinePaint: Paint?
+    private val scanLineGlowPaint: Paint?
+
     private val viewfinderRect: RectF = RectF()
 
     fun getViewfinderRect(): Rect = viewfinderRect.toRect()
@@ -70,6 +79,26 @@ class ScanOverlay @JvmOverloads constructor(
                     color = getColor(R.styleable.ScanOverlay_viewfinder_corner_color, Color.WHITE)
                     style = Paint.Style.STROKE
                     strokeWidth = getDimension(R.styleable.ScanOverlay_viewfinder_corner_thickness, getDP(2f))
+                    strokeCap = Paint.Cap.ROUND
+                }
+                viewfinderCornerLength = getDimension(R.styleable.ScanOverlay_viewfinder_corner_length, 0f)
+                val scanLineColor = getColor(R.styleable.ScanOverlay_scan_line_color, Color.TRANSPARENT)
+                if (scanLineColor != Color.TRANSPARENT) {
+                    scanLinePaint = Paint(ANTI_ALIAS_FLAG).apply {
+                        color = scanLineColor
+                        style = Paint.Style.STROKE
+                        strokeWidth = getDP(2f)
+                    }
+                    scanLineGlowPaint = Paint(ANTI_ALIAS_FLAG).apply {
+                        color = scanLineColor
+                        alpha = 140
+                        style = Paint.Style.STROKE
+                        strokeWidth = getDP(6f)
+                        maskFilter = BlurMaskFilter(getDP(6f), BlurMaskFilter.Blur.NORMAL)
+                    }
+                } else {
+                    scanLinePaint = null
+                    scanLineGlowPaint = null
                 }
                 backgroundPaint = Paint().apply {
                     color = getColor(R.styleable.ScanOverlay_overlay_mask_color, Color.parseColor("#80000000"))
@@ -97,6 +126,56 @@ class ScanOverlay @JvmOverloads constructor(
         // Viewfinder
         canvas.drawRoundRect(viewfinderRect, viewfinderRadius, viewfinderRadius, viewfinderPaint)
 
+        if (viewfinderCornerLength > 0f) {
+            drawBracketCorners(canvas)
+        } else {
+            drawArcCorners(canvas)
+        }
+
+        // Scan line
+        if (scanLinePaint != null && scanLineGlowPaint != null) {
+            val inset = viewfinderRect.width() * 0.08f
+            val y = viewfinderRect.centerY()
+            canvas.drawLine(viewfinderRect.left - inset, y, viewfinderRect.right + inset, y, scanLineGlowPaint)
+            canvas.drawLine(viewfinderRect.left - inset, y, viewfinderRect.right + inset, y, scanLinePaint)
+        }
+    }
+
+    private fun drawBracketCorners(canvas: Canvas) {
+        val r = viewfinderRadius
+        val l = viewfinderCornerLength
+        val rect = viewfinderRect
+
+        viewfinderCornerPath.reset()
+
+        // Top Left
+        viewfinderCornerPath.moveTo(rect.left, rect.top + r + l)
+        viewfinderCornerPath.lineTo(rect.left, rect.top + r)
+        viewfinderCornerPath.arcTo(rect.left, rect.top, rect.left + 2 * r, rect.top + 2 * r, 180f, 90f, false)
+        viewfinderCornerPath.lineTo(rect.left + r + l, rect.top)
+
+        // Top Right
+        viewfinderCornerPath.moveTo(rect.right - r - l, rect.top)
+        viewfinderCornerPath.lineTo(rect.right - r, rect.top)
+        viewfinderCornerPath.arcTo(rect.right - 2 * r, rect.top, rect.right, rect.top + 2 * r, 270f, 90f, false)
+        viewfinderCornerPath.lineTo(rect.right, rect.top + r + l)
+
+        // Bottom Right
+        viewfinderCornerPath.moveTo(rect.right, rect.bottom - r - l)
+        viewfinderCornerPath.lineTo(rect.right, rect.bottom - r)
+        viewfinderCornerPath.arcTo(rect.right - 2 * r, rect.bottom - 2 * r, rect.right, rect.bottom, 0f, 90f, false)
+        viewfinderCornerPath.lineTo(rect.right - r - l, rect.bottom)
+
+        // Bottom Left
+        viewfinderCornerPath.moveTo(rect.left + r + l, rect.bottom)
+        viewfinderCornerPath.lineTo(rect.left + r, rect.bottom)
+        viewfinderCornerPath.arcTo(rect.left, rect.bottom - 2 * r, rect.left + 2 * r, rect.bottom, 90f, 90f, false)
+        viewfinderCornerPath.lineTo(rect.left, rect.bottom - r - l)
+
+        canvas.drawPath(viewfinderCornerPath, viewfinderCornerPaint)
+    }
+
+    private fun drawArcCorners(canvas: Canvas) {
         // Corner
         val cornerSize = viewfinderRadius * 2f
 

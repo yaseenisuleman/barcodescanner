@@ -212,8 +212,7 @@ class SettingsManager(private val context: Context) {
         context.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
 
-    private fun getDefaultColorKey(): String =
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) "material_you" else "blue"
+    private fun getDefaultColorKey(): String = "green"
 
     fun getDefaultZoomValue(): Int = prefs.getInt(defaultZoomValueKey, 50)
 
