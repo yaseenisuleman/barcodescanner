@@ -74,13 +74,14 @@
 
     <!-- Camera -->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/fragment_main_camera_x_scanner_camera_card"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="@dimen/medium_margin"
         app:cardUseCompatPadding="false"
         app:cardCornerRadius="@dimen/camera_card_corner_radius"
-        app:cardBackgroundColor="@android:color/black"
+        app:cardBackgroundColor="@color/camera_idle_background"
         app:strokeWidth="0dp">
 
         <FrameLayout
@@ -98,6 +99,26 @@
                 android:textColor="@android:color/white"
                 android:visibility="gone"
                 style="@style/AppTheme.TextView.Appearance.Normal.Secondary" />
+
+            <!-- Camera off -->
+            <LinearLayout
+                android:id="@+id/fragment_main_camera_x_scanner_idle_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/scan_overlay_bottom_margin"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/camera_idle_icon_size"
+                    android:layout_height="@dimen/camera_idle_icon_size"
+                    android:padding="@dimen/large_margin"
+                    android:background="@drawable/camera_chip_background"
+                    android:src="@drawable/baseline_photo_camera_24"
+                    app:tint="@color/scan_highlight"
+                    android:contentDescription="@string/image_view_description_icon" />
+            </LinearLayout>
 
             <androidx.camera.view.PreviewView
                 android:id="@+id/fragment_main_camera_x_scanner_preview_view"
@@ -124,6 +145,7 @@
                 android:id="@+id/fragment_main_camera_x_scanner_zoom_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_gravity="top|start"
                 android:layout_margin="@dimen/medium_margin"
                 android:background="@drawable/camera_chip_background"
@@ -136,6 +158,7 @@
                 android:id="@+id/fragment_main_camera_x_scanner_flash_button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:visibility="gone"
                 android:layout_gravity="top|end"
                 android:layout_margin="@dimen/medium_margin"
                 android:background="@drawable/camera_chip_background"
@@ -183,6 +206,7 @@
                     android:padding="@dimen/large_margin">
 
                     <ImageView
+                        android:id="@+id/fragment_main_camera_x_scanner_status_icon_image_view"
                         android:layout_width="@dimen/icon_x_large_size"
                         android:layout_height="@dimen/icon_x_large_size"
                         android:src="@drawable/baseline_check_circle_24"
@@ -197,6 +221,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/fragment_main_camera_x_scanner_status_title_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/header_scan_subtitle"
@@ -204,6 +229,7 @@
                             style="@style/AppTheme.TextView.Appearance.Normal.Primary" />
 
                         <TextView
+                            android:id="@+id/fragment_main_camera_x_scanner_status_text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/thin_margin"
@@ -240,19 +266,30 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
             android:text="@string/gallery_label"
             app:icon="@drawable/baseline_image_24"
             style="@style/AppTheme.MaterialButton.Tile" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_main_camera_x_scanner_look_up_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/small_margin"
+            android:text="@string/look_up_label"
+            app:icon="@drawable/baseline_search_24"
+            style="@style/AppTheme.MaterialButton.Tile" />
     </LinearLayout>
 
-    <!-- Look up item -->
+    <!-- Scan (start / stop the camera) -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/fragment_main_camera_x_scanner_look_up_button"
+        android:id="@+id/fragment_main_camera_x_scanner_scan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/medium_margin"
-        android:text="@string/look_up_item_label"
-        app:icon="@drawable/baseline_search_24"
+        android:text="@string/title_scan"
+        app:icon="@drawable/baseline_qr_code_scanner_24"
         style="@style/AppTheme.MaterialButton.Large" />
 
 </LinearLayout>

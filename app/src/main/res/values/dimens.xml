@@ -52,6 +52,7 @@
     <dimen name="camera_card_corner_radius">20dp</dimen>
     <dimen name="scan_overlay_bottom_margin">88dp</dimen>
     <dimen name="scan_slider_bottom_margin">84dp</dimen>
+    <dimen name="camera_idle_icon_size">72dp</dimen>
 
     <!-- Vault -->
     <dimen name="vault_item_image_size">64dp</dimen>

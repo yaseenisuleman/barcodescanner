@@ -25,6 +25,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.HapticFeedbackConstants
@@ -46,6 +47,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import com.atharok.barcodescanner.BuildConfig
 import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.common.extensions.SCAN_RESULT
 import com.atharok.barcodescanner.common.extensions.SCAN_RESULT_ERROR_CORRECTION_LEVEL
@@ -73,6 +75,7 @@ import com.atharok.barcodescanner.presentation.views.activities.BarcodeScanFromI
 import com.atharok.barcodescanner.presentation.views.activities.BaseActivity
 import com.atharok.barcodescanner.presentation.views.activities.MainActivity
 import com.atharok.barcodescanner.presentation.views.fragments.BaseFragment
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
@@ -93,6 +96,9 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     companion object {
         private const val ZXING_SCAN_INTENT_ACTION = "com.google.zxing.client.android.SCAN"
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+
+        // La caméra s'éteint si rien n'est scanné pendant ce délai (mode manuel)
+        private const val CAMERA_AUTO_STOP_DELAY_MS = 60_000L
     }
 
     private val databaseBarcodeViewModel: DatabaseBarcodeViewModel by activityViewModel()
@@ -110,6 +116,15 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     private var isBarcodeAnalyzerRunning = false
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
+
+    /**
+     * Mode manuel (portrait dans MainActivity) : la caméra ne démarre qu'avec le bouton Scan
+     * et s'éteint après chaque scan. Sinon (paysage, scan demandé par une autre application),
+     * la caméra fonctionne en continu comme avant.
+     */
+    private var isManualMode = false
+    private var isCameraActive = false
+    private val autoStopRunnable = Runnable { stopScanning() }
     private var flashEnabled = false
     private var isProcessingBarcode = false
     private var lastProcessingTime = 0L
@@ -120,6 +135,14 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     // ---- View ----
     private var _binding: FragmentMainCameraXScannerBinding? = null
     private val viewBinding get() = _binding!!
+
+    // Doit être enregistré avant que le Fragment ne soit démarré
+    private val cameraPermissionLauncher: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) {
+                startScanning()
+            } else doPermissionRefused()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -134,23 +157,33 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (allPermissionsGranted()) {
-            doPermissionGranted()
-        } else {
-            requestPermissions()
-        }
+        cameraExecutor = Executors.newSingleThreadExecutor()
+        configureZoomSlider()
 
-        // Les boutons Torch / Gallery ne sont présents qu'en mode portrait, sinon on utilise le menu
-        if (viewBinding.fragmentMainCameraXScannerTorchButton != null) {
+        // Les boutons Torch / Gallery / Scan ne sont présents qu'en mode portrait, sinon on utilise le menu
+        if (viewBinding.fragmentMainCameraXScannerScanButton != null) {
             configureButtons()
         } else {
             configureMenu()
         }
-        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        val activity = requireActivity()
+        isManualMode = viewBinding.fragmentMainCameraXScannerScanButton != null && activity is MainActivity
+
+        if (isManualMode) {
+            updateCameraViews()
+            // Raccourci "Scan" : on démarre directement la caméra
+            if (savedInstanceState == null && activity.intent?.action == "${BuildConfig.APPLICATION_ID}.SCAN") {
+                startScanning()
+            }
+        } else {
+            startScanning()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewBinding.root.removeCallbacks(autoStopRunnable)
         cameraExecutor.shutdown()
         stopBarcodeAnalyzer()
         _binding = null
@@ -175,8 +208,8 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         // Reset processing flag when fragment resumes
         isProcessingBarcode = false
 
-       if (allPermissionsGranted() && !isBarcodeAnalyzerRunning) {
-           startBarcodeAnalyzer()
+        if (isCameraActive && allPermissionsGranted() && !isBarcodeAnalyzerRunning) {
+            startBarcodeAnalyzer()
         }
     }
 
@@ -184,6 +217,10 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         super.onPause()
         switchOffFlash()
         stopBarcodeAnalyzer()
+        // En mode manuel, la caméra s'éteint dès qu'on quitte l'écran (résultat, autre application...)
+        if (isManualMode) {
+            stopScanning()
+        }
     }
 
     // ---- Menu ----
@@ -240,27 +277,91 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden) {
-            switchOffFlash()
-            stopBarcodeAnalyzer()
-            cameraProvider?.unbindAll()
-            camera = null
-        } else if (allPermissionsGranted()) {
-            startCamera()
+            stopScanning()
+        } else if (!isManualMode) {
+            startScanning()
+        }
+    }
+
+    // ---- Start / Stop scanning ----
+
+    private fun startScanning() {
+        if (!allPermissionsGranted()) {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            return
+        }
+        isCameraActive = true
+        updateCameraViews()
+        startCamera()
+        if (isManualMode) {
+            viewBinding.root.removeCallbacks(autoStopRunnable)
+            viewBinding.root.postDelayed(autoStopRunnable, CAMERA_AUTO_STOP_DELAY_MS)
+        }
+    }
+
+    private fun stopScanning() {
+        isCameraActive = false
+        switchOffFlash()
+        stopBarcodeAnalyzer()
+        cameraProvider?.unbindAll()
+        camera = null
+        if (_binding != null) {
+            viewBinding.root.removeCallbacks(autoStopRunnable)
+            updateCameraViews()
+        }
+    }
+
+    /**
+     * Affiche l'aperçu caméra lorsqu'elle est active, sinon la carte "Caméra éteinte".
+     */
+    private fun updateCameraViews() {
+        val active = isCameraActive
+        val cameraVisibility = if (active) View.VISIBLE else View.GONE
+        viewBinding.fragmentMainCameraXScannerCameraPermissionTextView.visibility = View.GONE
+        viewBinding.fragmentMainCameraXScannerPreviewView.visibility = cameraVisibility
+        viewBinding.fragmentMainCameraXScannerScanOverlay.visibility = cameraVisibility
+        viewBinding.fragmentMainCameraXScannerSlider.visibility = cameraVisibility
+        viewBinding.fragmentMainCameraXScannerInformationTextView?.visibility = View.VISIBLE
+        viewBinding.fragmentMainCameraXScannerZoomTextView?.visibility = cameraVisibility
+        viewBinding.fragmentMainCameraXScannerIdleLayout?.visibility = if (active) View.GONE else View.VISIBLE
+
+        val hasFlash = requireContext().hasFlash()
+        viewBinding.fragmentMainCameraXScannerFlashButton?.visibility = if (active && hasFlash) View.VISIBLE else View.GONE
+        viewBinding.fragmentMainCameraXScannerTorchButton?.isEnabled = active && hasFlash
+
+        viewBinding.fragmentMainCameraXScannerStatusIconImageView?.setImageResource(
+            if (active) R.drawable.baseline_check_circle_24 else R.drawable.baseline_photo_camera_24
+        )
+        viewBinding.fragmentMainCameraXScannerStatusTitleTextView?.setText(
+            if (active) R.string.header_scan_subtitle else R.string.camera_off_label
+        )
+        // Vert lorsque la caméra est prête, gris lorsqu'elle est éteinte
+        val statusColor = MaterialColors.getColor(
+            viewBinding.root,
+            if (active) androidx.appcompat.R.attr.colorPrimary else com.google.android.material.R.attr.colorOnSurfaceVariant
+        )
+        viewBinding.fragmentMainCameraXScannerStatusTitleTextView?.setTextColor(statusColor)
+        viewBinding.fragmentMainCameraXScannerStatusIconImageView?.imageTintList = ColorStateList.valueOf(statusColor)
+        viewBinding.fragmentMainCameraXScannerStatusTextView?.setText(
+            if (active) R.string.scan_information_label else R.string.tap_scan_to_start_label
+        )
+        viewBinding.fragmentMainCameraXScannerScanButton?.apply {
+            setText(if (active) R.string.stop_label else R.string.title_scan)
+            setIconResource(if (active) R.drawable.baseline_highlight_off_24 else R.drawable.baseline_qr_code_scanner_24)
         }
     }
 
     // ---- Buttons ----
 
     private fun configureButtons() {
-        val hasFlash = requireContext().hasFlash()
-        viewBinding.fragmentMainCameraXScannerTorchButton?.apply {
-            isEnabled = hasFlash
-            setOnClickListener { switchFlash() }
+        viewBinding.fragmentMainCameraXScannerScanButton?.setOnClickListener {
+            if (isCameraActive) stopScanning() else startScanning()
         }
-        viewBinding.fragmentMainCameraXScannerFlashButton?.apply {
-            visibility = if (hasFlash) View.VISIBLE else View.GONE
-            setOnClickListener { switchFlash() }
+        viewBinding.fragmentMainCameraXScannerCameraCard?.setOnClickListener {
+            if (!isCameraActive) startScanning()
         }
+        viewBinding.fragmentMainCameraXScannerTorchButton?.setOnClickListener { switchFlash() }
+        viewBinding.fragmentMainCameraXScannerFlashButton?.setOnClickListener { switchFlash() }
         viewBinding.fragmentMainCameraXScannerGalleryButton?.setOnClickListener {
             startBarcodeScanFromImageActivity()
         }
@@ -278,33 +379,16 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
 
     // ---- Camera Permission ----
 
-    private fun requestPermissions() {
-        val activityResultLauncher: ActivityResultLauncher<String> =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-                if (it) {
-                    doPermissionGranted()
-                } else doPermissionRefused()
-            }
-
-        // Gère le resultat de la demande de permission d'accès à la caméra.
-        activityResultLauncher.launch(Manifest.permission.CAMERA)
-    }
-
     private fun allPermissionsGranted(): Boolean = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireActivity(), it) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun doPermissionGranted() {
-        startCamera()
-        viewBinding.fragmentMainCameraXScannerCameraPermissionTextView.visibility = View.GONE
-        viewBinding.fragmentMainCameraXScannerPreviewView.visibility = View.VISIBLE
-        viewBinding.fragmentMainCameraXScannerScanOverlay.visibility = View.VISIBLE
-        viewBinding.fragmentMainCameraXScannerSlider.visibility = View.VISIBLE
-        viewBinding.fragmentMainCameraXScannerInformationTextView?.visibility = View.VISIBLE
-    }
-
     private fun doPermissionRefused() {
+        isCameraActive = false
         stopBarcodeAnalyzer()
+        viewBinding.fragmentMainCameraXScannerIdleLayout?.visibility = View.GONE
+        viewBinding.fragmentMainCameraXScannerZoomTextView?.visibility = View.GONE
+        viewBinding.fragmentMainCameraXScannerFlashButton?.visibility = View.GONE
         viewBinding.fragmentMainCameraXScannerCameraPermissionTextView.visibility = View.VISIBLE
         viewBinding.fragmentMainCameraXScannerPreviewView.visibility = View.GONE
         viewBinding.fragmentMainCameraXScannerScanOverlay.visibility = View.GONE
@@ -320,8 +404,8 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         cameraProviderFuture.addListener({
 
             // Prevent a rare crash if the view is destroyed before the ProcessCameraProvider callback is executed
-            // ... ou si l'onglet Scan a été masqué entre-temps
-            if (_binding == null || isHidden) {
+            // ... ou si l'onglet Scan a été masqué / la caméra arrêtée entre-temps
+            if (_binding == null || isHidden || !isCameraActive) {
                 return@addListener
             }
 
@@ -480,21 +564,30 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
 
     // Zoom
 
-    private fun configureZoom() {
-        val slider = viewBinding.fragmentMainCameraXScannerSlider
-        slider.value = settingsManager.getDefaultZoomValue() / 100f
-        setLinearZoom(slider.value)
-        slider.addOnChangeListener { v, value, _ ->
+    /**
+     * Configuré une seule fois par vue : la caméra peut être démarrée plusieurs fois.
+     */
+    private fun configureZoomSlider() {
+        viewBinding.fragmentMainCameraXScannerSlider.addOnChangeListener { v, value, _ ->
             setLinearZoom(value)
             // BZZZTT!!1!
             v.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
         }
+    }
+
+    private fun configureZoom() {
+        val slider = viewBinding.fragmentMainCameraXScannerSlider
+        slider.value = settingsManager.getDefaultZoomValue() / 100f
+        setLinearZoom(slider.value)
         CameraZoomGestureDetector(slider.value)
             .attach(viewBinding.fragmentMainCameraXScannerScanOverlay) { value ->
                 slider.value = value
             }
-        camera?.cameraInfo?.zoomState?.observe(viewLifecycleOwner) { zoomState ->
-            viewBinding.fragmentMainCameraXScannerZoomTextView?.text = getString(R.string.zoom_ratio_label, zoomState.zoomRatio)
+        camera?.cameraInfo?.zoomState?.let { zoomState ->
+            zoomState.removeObservers(viewLifecycleOwner)
+            zoomState.observe(viewLifecycleOwner) {
+                viewBinding.fragmentMainCameraXScannerZoomTextView?.text = getString(R.string.zoom_ratio_label, it.zoomRatio)
+            }
         }
     }
 
@@ -535,6 +628,10 @@ class MainCameraXScannerFragment : BaseFragment(), CameraBarcodeAnalyzer.Barcode
         if(contents != null && formatName != null) {
 
             stopBarcodeAnalyzer()
+            // En mode manuel, la caméra s'éteint après chaque scan
+            if (isManualMode) {
+                stopScanning()
+            }
 
             if(settingsManager.shouldCopyBarcodeScan) {
                 copyToClipboard("contents", contents)
