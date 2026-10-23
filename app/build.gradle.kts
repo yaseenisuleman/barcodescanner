@@ -43,6 +43,14 @@ android {
             )
             signingConfig = signingConfigs.getByName("release")
         }
+        // Same optimisations as release (R8, no debugging), signed with the debug key and
+        // using the debug application ID so it installs over existing debug builds.
+        create("optimized") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".debug"
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

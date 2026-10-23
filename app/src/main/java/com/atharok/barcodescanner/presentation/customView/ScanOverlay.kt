@@ -22,9 +22,9 @@ package com.atharok.barcodescanner.presentation.customView
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.BlurMaskFilter
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Path
@@ -32,6 +32,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.toRect
@@ -63,8 +64,10 @@ class ScanOverlay @JvmOverloads constructor(
     private val viewfinderCornerLength: Float
     private val viewfinderCornerPath: Path = Path()
 
+    private val scanLineColor: Int
     private val scanLinePaint: Paint?
     private val scanLineGlowPaint: Paint?
+    private val scanLineGlowRect: RectF = RectF()
 
     private val viewfinderRect: RectF = RectF()
 
@@ -82,19 +85,16 @@ class ScanOverlay @JvmOverloads constructor(
                     strokeCap = Paint.Cap.ROUND
                 }
                 viewfinderCornerLength = getDimension(R.styleable.ScanOverlay_viewfinder_corner_length, 0f)
-                val scanLineColor = getColor(R.styleable.ScanOverlay_scan_line_color, Color.TRANSPARENT)
+                scanLineColor = getColor(R.styleable.ScanOverlay_scan_line_color, Color.TRANSPARENT)
                 if (scanLineColor != Color.TRANSPARENT) {
                     scanLinePaint = Paint(ANTI_ALIAS_FLAG).apply {
                         color = scanLineColor
                         style = Paint.Style.STROKE
                         strokeWidth = getDP(2f)
                     }
-                    scanLineGlowPaint = Paint(ANTI_ALIAS_FLAG).apply {
-                        color = scanLineColor
-                        alpha = 140
-                        style = Paint.Style.STROKE
-                        strokeWidth = getDP(6f)
-                        maskFilter = BlurMaskFilter(getDP(6f), BlurMaskFilter.Blur.NORMAL)
+                    // Halo en dégradé (moins coûteux qu'un BlurMaskFilter en rendu logiciel)
+                    scanLineGlowPaint = Paint().apply {
+                        style = Paint.Style.FILL
                     }
                 } else {
                     scanLinePaint = null
@@ -134,10 +134,9 @@ class ScanOverlay @JvmOverloads constructor(
 
         // Scan line
         if (scanLinePaint != null && scanLineGlowPaint != null) {
-            val inset = viewfinderRect.width() * 0.08f
             val y = viewfinderRect.centerY()
-            canvas.drawLine(viewfinderRect.left - inset, y, viewfinderRect.right + inset, y, scanLineGlowPaint)
-            canvas.drawLine(viewfinderRect.left - inset, y, viewfinderRect.right + inset, y, scanLinePaint)
+            canvas.drawRect(scanLineGlowRect, scanLineGlowPaint)
+            canvas.drawLine(scanLineGlowRect.left, y, scanLineGlowRect.right, y, scanLinePaint)
         }
     }
 
@@ -207,5 +206,17 @@ class ScanOverlay @JvmOverloads constructor(
         val bottom = centerY + viewfinderSize / 2f
 
         viewfinderRect.set(left, top, right, bottom)
+
+        scanLineGlowPaint?.let {
+            val inset = viewfinderSize * 0.08f
+            val glowHeight = getDP(8f)
+            scanLineGlowRect.set(left - inset, centerY - glowHeight, right + inset, centerY + glowHeight)
+            val glowColor = Color.argb(110, Color.red(scanLineColor), Color.green(scanLineColor), Color.blue(scanLineColor))
+            it.shader = LinearGradient(
+                0f, scanLineGlowRect.top, 0f, scanLineGlowRect.bottom,
+                intArrayOf(Color.TRANSPARENT, glowColor, Color.TRANSPARENT), null,
+                Shader.TileMode.CLAMP
+            )
+        }
     }
 }

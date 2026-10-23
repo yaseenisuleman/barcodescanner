@@ -253,6 +253,12 @@ class MainActivity: BaseActivity() {
     private fun changeFragment(fragment: Fragment, titleResource: Int): Boolean {
         titleRes = titleResource
         supportActionBar?.setTitle(titleResource)
+
+        // Évite de recréer le fragment déjà affiché (ex: au démarrage ou en appuyant sur l'onglet actif),
+        // ce qui redémarrait inutilement la caméra.
+        if (fragment.isAdded && supportFragmentManager.findFragmentById(viewBinding.activityMainFrameLayout.id) === fragment) {
+            return true
+        }
         supportFragmentManager.commitNow {
             setReorderingAllowed(false)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
