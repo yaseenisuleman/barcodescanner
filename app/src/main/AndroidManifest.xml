@@ -91,36 +91,9 @@
             android:label="@string/ingredients_analysis_label" />
         <activity
             android:name=".presentation.views.activities.BarcodeDetailsActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_bar_code_creator"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter android:label="@string/title_qr_code_creator">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-            <intent-filter android:label="@string/title_qr_code_creator">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/x-vcard" />
-            </intent-filter>
-            <intent-filter android:label="@string/title_qr_code_creator">
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/calendar" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.google.zxing.client.android.ENCODE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".presentation.views.activities.BarcodeFormCreatorActivity"
             android:label="@string/title_bar_code_creator" />

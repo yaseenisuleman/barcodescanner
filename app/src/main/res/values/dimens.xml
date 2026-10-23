@@ -57,6 +57,12 @@
     <!-- Vault -->
     <dimen name="vault_item_image_size">64dp</dimen>
     <dimen name="history_item_image_size">48dp</dimen>
+    <dimen name="history_empty_graphic_size">132dp</dimen>
+    <dimen name="history_empty_icon_size">60dp</dimen>
+    <dimen name="history_empty_badge_size">44dp</dimen>
+    <dimen name="history_empty_horizontal_padding">32dp</dimen>
+    <dimen name="history_empty_bottom_offset">48dp</dimen>
+    <dimen name="history_empty_button_padding">28dp</dimen>
 
     <!-- Header -->
     <dimen name="header_tile_size">52dp</dimen>

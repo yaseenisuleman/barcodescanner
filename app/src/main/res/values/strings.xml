@@ -927,7 +927,6 @@
     <string name="title_vault">Vault</string>
     <string name="header_scan_subtitle">Ready to scan</string>
     <string name="header_history_subtitle">Your scanned barcodes</string>
-    <string name="header_generate_subtitle">Create a barcode</string>
     <string name="header_settings_subtitle">App preferences</string>
     <string name="header_vault_title">Stock Vault</string>
     <string name="header_vault_subtitle">Active Stock Count</string>
@@ -970,5 +969,8 @@
     <string name="counted_by_value">You</string>
     <string name="decrease_label">Decrease</string>
     <string name="increase_label">Increase</string>
+    <string name="history_empty_title">No scans yet</string>
+    <string name="history_empty_message">Barcodes you scan will appear here, so you can find them again later.</string>
+    <string name="history_empty_button">Start scanning</string>
     <string name="placeholder_not_available">Not available yet</string>
 </resources>

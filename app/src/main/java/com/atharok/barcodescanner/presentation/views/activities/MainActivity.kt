@@ -38,7 +38,6 @@ import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.databinding.ActivityMainBinding
 import com.atharok.barcodescanner.databinding.TemplateMainHeaderBinding
 import com.atharok.barcodescanner.presentation.viewmodel.DynamicShortcutViewModel
-import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeCreatorListFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeHistoryFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainCameraXScannerFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainSettingsFragment
@@ -62,7 +61,6 @@ class MainActivity: BaseActivity() {
         private val PREWARMED_TABS = listOf(
             R.id.menu_navigation_bottom_view_vault,
             R.id.menu_navigation_bottom_view_history,
-            R.id.menu_navigation_bottom_view_create,
             R.id.menu_navigation_bottom_view_settings
         )
     }
@@ -72,7 +70,6 @@ class MainActivity: BaseActivity() {
 
     private val mainCameraXScannerFragment: MainCameraXScannerFragment by inject()
     private val mainHistoryFragment: MainBarcodeHistoryFragment by inject()
-    private val mainBarcodeCreatorListFragment: MainBarcodeCreatorListFragment by inject()
     private val mainSettingsFragment: MainSettingsFragment by inject()
     private val mainVaultFragment: MainVaultFragment by inject()
 
@@ -152,7 +149,6 @@ class MainActivity: BaseActivity() {
             R.id.menu_navigation_bottom_view_scan -> showHeader(R.string.app_name, R.string.header_scan_subtitle, R.drawable.ic_bar_code_24, highlighted = true)
             R.id.menu_navigation_bottom_view_vault -> showHeader(R.string.header_vault_title, R.string.header_vault_subtitle, R.drawable.outline_inventory_24)
             R.id.menu_navigation_bottom_view_history -> showHeader(R.string.title_history, R.string.header_history_subtitle, R.drawable.baseline_history_24)
-            R.id.menu_navigation_bottom_view_create -> showHeader(R.string.title_bar_code_creator, R.string.header_generate_subtitle, R.drawable.baseline_create_24)
             R.id.menu_navigation_bottom_view_settings -> showHeader(R.string.title_settings, R.string.header_settings_subtitle, R.drawable.baseline_settings_24)
         }
         headerBinding.templateMainHeaderSettingsButton.visibility =
@@ -219,7 +215,6 @@ class MainActivity: BaseActivity() {
             val selectedItemId = when (intent?.action) {
                 "${BuildConfig.APPLICATION_ID}.SCAN" -> R.id.menu_navigation_bottom_view_scan
                 "${BuildConfig.APPLICATION_ID}.HISTORY" -> R.id.menu_navigation_bottom_view_history
-                "${BuildConfig.APPLICATION_ID}.CREATE" -> R.id.menu_navigation_bottom_view_create
                 "android.intent.action.APPLICATION_PREFERENCES" -> R.id.menu_navigation_bottom_view_settings
                 else -> currentItemId
             }
@@ -237,7 +232,6 @@ class MainActivity: BaseActivity() {
             R.id.menu_navigation_bottom_view_scan -> changeFragment(id, R.string.title_scan)
             R.id.menu_navigation_bottom_view_vault -> changeFragment(id, R.string.header_vault_title)
             R.id.menu_navigation_bottom_view_history -> changeFragment(id, R.string.title_history)
-            R.id.menu_navigation_bottom_view_create -> changeFragment(id, R.string.title_bar_code_creator)
             R.id.menu_navigation_bottom_view_settings -> changeFragment(id, R.string.title_settings)
             else -> false
         }
@@ -253,7 +247,6 @@ class MainActivity: BaseActivity() {
             R.id.menu_navigation_bottom_view_scan -> mainCameraXScannerFragment
             R.id.menu_navigation_bottom_view_vault -> mainVaultFragment
             R.id.menu_navigation_bottom_view_history -> mainHistoryFragment
-            R.id.menu_navigation_bottom_view_create -> mainBarcodeCreatorListFragment
             R.id.menu_navigation_bottom_view_settings -> mainSettingsFragment
             else -> null
         }

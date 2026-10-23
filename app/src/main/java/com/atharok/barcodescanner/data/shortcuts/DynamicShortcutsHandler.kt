@@ -28,7 +28,6 @@ import androidx.core.graphics.drawable.IconCompat
 import com.atharok.barcodescanner.BuildConfig
 import com.atharok.barcodescanner.R
 import com.atharok.barcodescanner.domain.entity.DynamicShortcut
-import com.atharok.barcodescanner.presentation.views.activities.BarcodeDetailsActivity
 import com.atharok.barcodescanner.presentation.views.activities.BarcodeScanFromImageShortcutActivity
 import com.atharok.barcodescanner.presentation.views.activities.MainActivity
 
@@ -40,8 +39,6 @@ class DynamicShortcutsHandler(
         private const val SCAN_ID = "scan"
         private const val SCAN_FROM_IMAGE_ID = "scanFromImage"
         private const val HISTORY_ID = "history"
-        private const val CREATE_ID = "create"
-        private const val CREATE_FROM_CLIPBOARD_ID = "createFromClipboard"
     }
 
     private val map: Map<String, DynamicShortcut> by lazy {
@@ -69,22 +66,6 @@ class DynamicShortcutsHandler(
                 icon = R.drawable.baseline_history_24,
                 targetClass = MainActivity::class.java,
                 action = "${BuildConfig.APPLICATION_ID}.HISTORY"
-            ),
-            CREATE_ID to DynamicShortcut(
-                id = CREATE_ID,
-                label = R.string.title_bar_code_creator,
-                drawable = R.mipmap.ic_shortcut_create,
-                icon = R.drawable.baseline_create_24,
-                targetClass = MainActivity::class.java,
-                action = "${BuildConfig.APPLICATION_ID}.CREATE"
-            ),
-            CREATE_FROM_CLIPBOARD_ID to DynamicShortcut(
-                id = CREATE_FROM_CLIPBOARD_ID,
-                label = R.string.create_qr_from_clipboard,
-                drawable = R.mipmap.ic_shortcut_create_from_clipboard,
-                icon = R.drawable.outline_content_paste_go_24,
-                targetClass = BarcodeDetailsActivity::class.java,
-                action = "${BuildConfig.APPLICATION_ID}.CREATE_FROM_CLIPBOARD"
             )
         )
     }
@@ -96,8 +77,6 @@ class DynamicShortcutsHandler(
             createShortcut(0, map[SCAN_ID])
             createShortcut(1, map[SCAN_FROM_IMAGE_ID])
             createShortcut(2, map[HISTORY_ID])
-            createShortcut(3, map[CREATE_ID])
-            createShortcut(4, map[CREATE_FROM_CLIPBOARD_ID])
         }
     }
 

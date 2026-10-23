@@ -105,9 +105,13 @@ class MainBarcodeHistoryFragment : BaseFragment(), BarcodeHistoryItemAdapter.OnB
         configureMenu()
 
         viewBinding.fragmentMainHistoryRecyclerView.visibility = View.GONE
-        viewBinding.fragmentMainHistoryEmptyTextView.visibility = View.GONE
+        viewBinding.fragmentMainHistoryEmptyLayout.visibility = View.GONE
 
         configureRecyclerView()
+
+        viewBinding.fragmentMainHistoryStartScanningButton.setOnClickListener {
+            (requireActivity() as? MainActivity)?.showScanTab()
+        }
 
         databaseBarcodeViewModel.barcodeList.observe(viewLifecycleOwner) {
             barcodeItemsSelected.clear()
@@ -115,10 +119,10 @@ class MainBarcodeHistoryFragment : BaseFragment(), BarcodeHistoryItemAdapter.OnB
             adapter.updateData(it)
 
             if (it.isEmpty()) {
-                viewBinding.fragmentMainHistoryEmptyTextView.visibility = View.VISIBLE
+                viewBinding.fragmentMainHistoryEmptyLayout.visibility = View.VISIBLE
                 viewBinding.fragmentMainHistoryRecyclerView.visibility = View.GONE
             } else {
-                viewBinding.fragmentMainHistoryEmptyTextView.visibility = View.GONE
+                viewBinding.fragmentMainHistoryEmptyLayout.visibility = View.GONE
                 viewBinding.fragmentMainHistoryRecyclerView.visibility = View.VISIBLE
             }
         }

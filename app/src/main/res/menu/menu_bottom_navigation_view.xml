@@ -19,11 +19,6 @@
         android:icon="@drawable/animated_selector_history"
         android:title="@string/title_history"/>
 
-    <item
-        android:id="@+id/menu_navigation_bottom_view_create"
-        android:enabled="true"
-        android:icon="@drawable/animated_selector_create"
-        android:title="@string/title_generate"/>
 
     <item
         android:id="@+id/menu_navigation_bottom_view_settings"

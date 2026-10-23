@@ -162,7 +162,6 @@ import com.atharok.barcodescanner.presentation.views.fragments.barcodeFormCreato
 import com.atharok.barcodescanner.presentation.views.fragments.barcodeFormCreator.BarcodeFormCreatorQrWifiFragment
 import com.atharok.barcodescanner.presentation.views.fragments.barcodeFormCreator.BarcodeFormCreatorUPCAFragment
 import com.atharok.barcodescanner.presentation.views.fragments.barcodeFormCreator.BarcodeFormCreatorUPCEFragment
-import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeCreatorListFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainBarcodeHistoryFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainCameraXScannerFragment
 import com.atharok.barcodescanner.presentation.views.fragments.main.MainSettingsFragment
@@ -523,7 +522,6 @@ val fragmentsModule = module {
 
     factory { MainCameraXScannerFragment() }
     factory { MainBarcodeHistoryFragment() }
-    factory { MainBarcodeCreatorListFragment() }
     factory { MainSettingsFragment() }
     factory { MainVaultFragment() }
 
